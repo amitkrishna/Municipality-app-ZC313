@@ -1,9 +1,7 @@
 *.idea*
 backend/HELP.md
 *target*
-!./backend/.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
+*.mvn*
 
 ### STS ###
 ./backend.apt_generated
