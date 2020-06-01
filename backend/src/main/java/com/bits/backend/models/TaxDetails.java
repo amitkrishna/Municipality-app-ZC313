@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,27 +18,39 @@ import lombok.Getter;
 @Setter
 @ToString
 public class TaxDetails {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name ="id", unique=true)
 	private long id;
+	
 	@Column(name ="email")
 	private String email;
+	
 	@Column(name="zone")
 	private char zone;
+	
 	@Column(name="area")
 	private double area;
+	
 	@Column(name ="tax_payable")
 	private double taxPayable;
+	
 	@Column(name="paid")
 	private boolean paid;
+	
 	@Column(name="discount_raised")
 	private boolean discountRaised;
+	
 	@Column(name="discount_approved")
 	private boolean discountApproved;
+	
 	@Column(name="discount")
 	private double discount;
+	
 	@Column(name="date_created")
 	private LocalDateTime dateCreated;
+	
 	@Column(name="date_modified")
 	private LocalDateTime dateModified;
 	
