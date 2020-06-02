@@ -28,7 +28,7 @@ backend/HELP.md
 
 ### VS Code ###
 ./frontend/.vscode/
-./backend/.vscode
+./backend/.vscode/
 
 
 ./backend/.classpath
