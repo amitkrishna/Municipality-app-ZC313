@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class PropertyTaxServices {
+public class PropertyTaxService {
 	
 	Logger log = LoggerFactory.getLogger(getClass());
 	
