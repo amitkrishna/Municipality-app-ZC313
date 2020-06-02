@@ -1,5 +1,6 @@
 package com.bits.backend.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -7,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "email", "zone", "date_created" }))
 @Entity
 public class TaxDetails {
 	
@@ -15,6 +19,48 @@ public class TaxDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name ="id", unique=true)
 	private long id;
+
+	@Column(name ="email")
+	private String email;
+	
+
+	@Column(name="zone")
+	private char zone;
+	
+
+	@Column(name="area")
+	private double area;
+	
+
+	@Column(name ="tax_payable")
+	private double taxPayable;
+	
+
+	@Column(name="paid")
+	private boolean paid;
+	
+
+	@Column(name="discount_raised")
+	private boolean discountRaised;
+	
+
+	@Column(name="discount_approved")
+	private boolean discountApproved;
+	
+
+	@Column(name="discount")
+	private double discount;
+	
+
+	@Column(name="date_created")
+	private LocalDate dateCreated;
+	
+
+	@Column(name="date_modified")
+	private LocalDateTime dateModified;
+
+	@Column(name="self_occupied")
+	private boolean selfOccupied;
 	
 	public long getId() {
 		return id;
@@ -88,11 +134,11 @@ public class TaxDetails {
 		this.discount = discount;
 	}
 
-	public LocalDateTime getDateCreated() {
+	public LocalDate getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(LocalDateTime dateCreated) {
+	public void setDateCreated(LocalDate dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -103,54 +149,19 @@ public class TaxDetails {
 	public void setDateModified(LocalDateTime dateModified) {
 		this.dateModified = dateModified;
 	}
-
-	@Column(name ="email")
-	private String email;
 	
-
-	@Column(name="zone")
-	private char zone;
-	
-
-	@Column(name="area")
-	private double area;
-	
-
-	@Column(name ="tax_payable")
-	private double taxPayable;
-	
-
-	@Column(name="paid")
-	private boolean paid;
-	
-
-	@Column(name="discount_raised")
-	private boolean discountRaised;
-	
-
-	@Column(name="discount_approved")
-	private boolean discountApproved;
-	
-
-	@Column(name="discount")
-	private double discount;
-	
-
-	@Column(name="date_created")
-	private LocalDateTime dateCreated;
-	
-
-	@Column(name="date_modified")
-	private LocalDateTime dateModified;
-	
-	public TaxDetails() {
-		
-		
-		
+	public boolean getSelfOccupied(){
+		return selfOccupied;
 	}
+
+	public void setSelfOccupied(boolean selfOccupied){
+		this.selfOccupied = selfOccupied;
+	}
+
+	public TaxDetails() {	}
 	
 	
-	public TaxDetails(String email, char zone, double area) {
+	public TaxDetails(String email, char zone, double area, boolean selfOccupied) {
 	
 		this.email = email;
 		this.taxPayable = 0.0;
@@ -160,11 +171,12 @@ public class TaxDetails {
 		this.discount = 0;
 		this.area = area;
 		this.zone = zone;
-		this.dateCreated = LocalDateTime.now();
+		this.selfOccupied = selfOccupied;
+		this.dateCreated = LocalDate.now();
 		this.dateModified = LocalDateTime.now();
 	}
 	
-	public TaxDetails(String email, char zone, double area, boolean discountRaised, double discount) {
+	public TaxDetails(String email, char zone, double area, boolean selfOccupied, boolean discountRaised, double discount) {
 		
 		this.email = email;
 		this.taxPayable = 0.0;
@@ -174,7 +186,8 @@ public class TaxDetails {
 		this.discountRaised = discountRaised;
 		this.discountApproved = false;
 		this.discount = discount;
-		this.dateCreated = LocalDateTime.now();
+		this.selfOccupied = selfOccupied;
+		this.dateCreated = LocalDate.now();
 		this.dateModified = LocalDateTime.now();
 	}
 	

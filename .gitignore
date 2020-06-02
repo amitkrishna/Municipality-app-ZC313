@@ -28,3 +28,8 @@ backend/HELP.md
 
 ### VS Code ###
 ./frontend/.vscode/
+./backend/.vscode
+
+
+./backend/.classpath
+./backend/.settings/org.eclipse.jdt.core.prefs

@@ -1,6 +1,8 @@
 package com.bits.backend.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +30,7 @@ public class PropertyTaxController {
 	private PropertyTaxService ptService;
 	
 	@PostMapping("/calculate")
-	public HttpEntity<String> calculatePropertTax(@RequestBody TaxDetails taxDetails) {
+	public HttpEntity<TaxDetails> calculatePropertTax(@RequestBody TaxDetails taxDetails) {
 		/**
 		 * Request body = {
 		 * 	email: String,
@@ -45,7 +49,7 @@ public class PropertyTaxController {
 		
 		log.info(taxDetails.toString());
 		HttpStatus status;
-		String response;
+		TaxDetails response;
 		double taxRate = 0;
 		switch(taxDetails.getZone()) {
 		
@@ -75,19 +79,38 @@ public class PropertyTaxController {
 				taxRate = 1;
 		}
 		
+		taxRate = (taxDetails.getSelfOccupied())?taxRate: 2*taxRate;
+		
 		taxDetails.setTaxPayable(taxRate * taxDetails.getArea());
-		taxDetails.setDateCreated(LocalDateTime.now());
+		taxDetails.setDateCreated(LocalDate.now());
 		taxDetails.setDateModified(LocalDateTime.now());
+
 		if(ptService.insertTaxDetails(taxDetails)) {
 			status = HttpStatus.OK;
-			response = taxDetails.toString();
+			response = taxDetails;
 		}
 		else {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			response = "Something Went Wrong!";
+			response = new TaxDetails();
 		}
 		
-		HttpEntity<String> res = new ResponseEntity<String>(response, status);
+		HttpEntity<TaxDetails> res = new ResponseEntity<TaxDetails>(response, status);
 		return res;
+	}
+
+	@GetMapping("/show/{email}")
+	public HttpEntity<List<TaxDetails>> getTaxDetailsByUser(@PathVariable String email){
+
+		HttpStatus status;
+
+		List<TaxDetails> tdList = ptService.getTaxDetailsByUser(email);
+		if(tdList.isEmpty())
+			status = HttpStatus.NOT_FOUND;
+		else status = HttpStatus.OK;
+
+		HttpEntity<List<TaxDetails>> res = new ResponseEntity<List<TaxDetails>>(tdList, status);
+		return res;
+
+
 	}
 }
