@@ -61,6 +61,9 @@ public class TaxDetails {
 
 	@Column(name="self_occupied")
 	private boolean selfOccupied;
+
+	@Column(name="sent_for_approval")
+	private boolean sentForApproval;
 	
 	public long getId() {
 		return id;
@@ -158,6 +161,14 @@ public class TaxDetails {
 		this.selfOccupied = selfOccupied;
 	}
 
+	public boolean getSentForApproval(){
+		return sentForApproval;
+	}
+
+	public void setSentForApproval(boolean sentForApproval){
+		this.sentForApproval = sentForApproval;
+	}
+	
 	public TaxDetails() {	}
 	
 	
@@ -167,6 +178,7 @@ public class TaxDetails {
 		this.taxPayable = 0.0;
 		this.paid = false;
 		this.discountRaised = false;
+		this.sentForApproval = false;
 		this.discountApproved = false;
 		this.discount = 0;
 		this.area = area;
@@ -184,6 +196,7 @@ public class TaxDetails {
 		this.zone = zone;
 		this.area = area;
 		this.discountRaised = discountRaised;
+		this.sentForApproval = false;
 		this.discountApproved = false;
 		this.discount = discount;
 		this.selfOccupied = selfOccupied;
