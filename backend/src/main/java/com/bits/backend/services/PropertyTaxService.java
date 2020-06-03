@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.bits.backend.repository.TaxDetailsRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class PropertyTaxService {
 	public boolean payTax(Long id) {
 		
 		try {
-			tdRepo.updatePaymentStatus(id);
+			tdRepo.updatePaymentStatus(id, LocalDateTime.now());
 		}
 		catch(Exception e) {
 			log.info(e.getMessage());
@@ -74,10 +75,10 @@ public class PropertyTaxService {
 		return true;
 	}
 	
-	public boolean raiseDiscount(Long id) {
+	public boolean raiseDiscount(Long id, double discount) {
 		
 		try {
-			tdRepo.updateDiscountRaised(id);
+			tdRepo.updateDiscountRaised(id, discount, LocalDateTime.now());
 		}
 		catch(Exception e) {
 			log.info(e.getMessage());
@@ -86,16 +87,70 @@ public class PropertyTaxService {
 		return true;
 	}
 	
-	public boolean approveDiscount(Long id) {
+	public TaxDetails approveDiscount(Long id) {
 		
+		double updatedTax = 0;
+		TaxDetails td = new TaxDetails();
 		try {
-		
-			tdRepo.updateDiscountApproved(id);
+
+			td = tdRepo.findTaxDetailsById(id);
+			if(!td.isDiscountApproved()){
+				updatedTax = td.getTaxPayable() - td.getDiscount();
+				tdRepo.updateDiscountApproved(id, updatedTax, LocalDateTime.now());
+			}
 		}
 		catch(Exception e) {
+			log.info(e.getMessage());
+		}
+		return td;
+	}
+
+	public boolean sendForApproval(Long id) {
+		try{
+			tdRepo.updateSentForApproval(id, LocalDateTime.now());
+		}
+		catch(Exception e){
 			log.info(e.getMessage());
 			return false;
 		}
 		return true;
+	}
+
+	public List<TaxDetails> getDiscountRaised(){
+
+		List<TaxDetails> taxDetails = new ArrayList<>();
+		try{
+			tdRepo.findAllDiscountRaised().forEach(taxDetails::add);
+		}
+		catch(Exception e){
+			log.info(e.getMessage());
+			return taxDetails;
+		}
+		return taxDetails;
+		
+	}
+
+	public List<TaxDetails> getSentForApproval(){
+
+		List<TaxDetails> taxDetails = new ArrayList<>();
+		try{
+			tdRepo.findAllSentForApproval().forEach(taxDetails::add);
+		}
+		catch(Exception e){
+			log.info(e.getMessage());
+			return taxDetails;
+		}
+		return taxDetails;
+	}
+
+	public TaxDetails findById(Long id){
+
+		try{
+			return tdRepo.findTaxDetailsById(id);
+		}
+		catch(Exception e){
+			log.info(e.getMessage());
+			return new TaxDetails();
+		}
 	}
 }
