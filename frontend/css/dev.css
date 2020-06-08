@@ -44,9 +44,10 @@
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.1s ease-in;
 }
 
 .heading-container:hover p {
-    transition: all 0.2s linear;
+    transition: all 0.2s ease-in;
     transform: translateY(-50px) scale(1.2);
 }
