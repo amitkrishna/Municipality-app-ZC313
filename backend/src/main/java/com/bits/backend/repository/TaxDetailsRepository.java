@@ -1,6 +1,6 @@
 package com.bits.backend.repository;
 
-import com.bits.backend.models.TaxDetails;
+import com.bits.backend.model.TaxDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;

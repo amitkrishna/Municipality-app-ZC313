@@ -1,4 +1,4 @@
-package com.bits.backend.controllers;
+package com.bits.backend.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bits.backend.models.TaxDetails;
-import com.bits.backend.services.PropertyTaxService;
+import com.bits.backend.model.TaxDetails;
+import com.bits.backend.service.PropertyTaxService;
 
 
 @RestController

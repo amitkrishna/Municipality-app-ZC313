@@ -1,4 +1,4 @@
-package com.bits.backend.models;
+package com.bits.backend.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
