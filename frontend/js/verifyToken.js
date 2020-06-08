@@ -1,4 +1,9 @@
 token = () => {};
+
+token.userNotLogged = () => {
+    console.log("Token Null");
+};
+
 token.verify = () => {
     var token = new Object();
     token["token"] = cookie.get("SSID");
@@ -9,11 +14,10 @@ token.verify = () => {
             data: JSON.stringify(token),
             contentType: "application/json",
             dataType: "json",
-            success: (ouser) => {},
+            success: (oUser) => {},
             error: (oError) => {},
         });
-    }
-    else{
-        //not looged
+    } else {
+        this.token.userNotLogged();
     }
 };
