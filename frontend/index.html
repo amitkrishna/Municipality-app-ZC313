@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.png" />
         <script>
             var domLoaded = false;
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -13,8 +14,16 @@
             });
         </script>
         <link rel="stylesheet" href="./css/style.css" />
+        <link rel="stylesheet" href="./css/dev.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <title>Municipality</title>
+        <script src="./js/cookie.js"></script>
+        <script src="./js/verifyToken.js"></script>
+        <script>
+            var user;
+            token.verify();
+            if (user != undefined) var isUser = true;
+        </script>
+        <title>Home | Municipality</title>
     </head>
     <body>
         <div class="layerBlack" id="spinnerLayer"></div>
@@ -43,11 +52,23 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
-                            <li><a href="">Tax</a></li>
-                            <li><a href="">Enquiry</a></li>
-                            <li><a href="">Pay</a></li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a href='tax.payer.html'>Tax</a></li>"
+                                    );
+                            </script>
                             <li><a href="">Contact</a></li>
-                            <li><a href="login.html">Sign Up/ Log In</a></li>
+                            <script>
+                                if (isUser) {
+                                    document.write(
+                                        "<li><a onclick='logout();'>Logout</a></li>"
+                                    );
+                                } else
+                                    document.write(
+                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
+                                    );
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -59,11 +80,54 @@
                     <h3 id="messageOk">OK</h3>
                 </div>
             </div>
-            <script src="./js/main.js"></script>
-            <script src="./js/cookie.js"></script>
-            <script src="./js/verifyToken.js"></script>
-            <script>
-                token.verify();
-            </script>
+
+            <div class="contributors">
+                <div class="contributors_container">
+                    <h3 style="text-align: center;">Contributors</h3>
+                    <div class="each-dev">
+                        <div class="dev-img">
+                            <img src="./assets/dev/a.png" alt="" />
+                        </div>
+                        <div class="dev-name">
+                            <p>Sreevishnu</p>
+                        </div>
+                    </div>
+                    <div class="each-dev">
+                        <div class="dev-img">
+                            <img src="./assets/dev/a.png" alt="" />
+                        </div>
+                        <div class="dev-name">
+                            <p>Amit</p>
+                        </div>
+                    </div>
+                    <div class="each-dev">
+                        <div class="dev-img">
+                            <img src="./assets/dev/a.png" alt="" />
+                        </div>
+                        <div class="dev-name">
+                            <p>Bilaal</p>
+                        </div>
+                    </div>
+                    <div class="each-dev">
+                        <div class="dev-img">
+                            <img src="./assets/dev/a.png" alt="" />
+                        </div>
+                        <div class="dev-name">
+                            <p>Rahul</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="heading">
+                <div class="heading-container">
+                    <p>
+                        Welcome to <br />
+                        Munclipality Web
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script src="./js/main.js"></script>
     </body>
 </html>

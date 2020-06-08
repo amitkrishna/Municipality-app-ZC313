@@ -97,9 +97,37 @@ $(".table-container").append(template.adminHead());
 $(".table").append(template.adminRow("a", "b", "c", "test@test.com", "12"));
 
 approve = () => {
+    activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/",
+        contentType: "application/json",
+        dataType: "json",
+        success: (oSuccess) => {
+            if (oSuccess) messageBox.show("Approved");
+            else messageBox.show("Error while approving!");
+        },
+        error: () => {
+            messageBox.show("Error while approving");
+        },
+    });
 };
 
 deny = () => {
+    activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/",
+        contentType: "application/json",
+        dataType: "json",
+        success: (oSuccess) => {
+            if (oSuccess) messageBox.show("Denied");
+            else messageBox.show("Error while denying!");
+        },
+        error: () => {
+            messageBox.show("Error while denying");
+        },
+    });
 };

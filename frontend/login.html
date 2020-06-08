@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.png" />
         <script>
             var domLoaded = false;
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -14,6 +15,15 @@
         </script>
         <link rel="stylesheet" href="./css/style.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./js/cookie.js"></script>
+        <script src="./js/verifyToken.js"></script>
+        <script>
+            var user;
+            token.verify();
+            if (user != undefined) {
+                window.location.href = "index.html";
+            }
+        </script>
         <title>Login | Municipality</title>
     </head>
     <body>
@@ -43,9 +53,6 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
-                            <li><a href="">Tax</a></li>
-                            <li><a href="">Enquiry</a></li>
-                            <li><a href="">Pay</a></li>
                             <li><a href="">Contact</a></li>
                             <li><a href="login.html">Sign Up/ Log In</a></li>
                         </ul>
@@ -80,11 +87,13 @@
                         placeholder="Password"
                     />
                     <button id="login">Login</button>
-                    <p>Don't have an account? <a href="register.html">Register</a></p>
+                    <p>
+                        Don't have an account?
+                        <a href="register.html">Register</a>
+                    </p>
                 </div>
             </div>
         </div>
-        <script src="./js/cookie.js"></script>
         <script src="./js/main.js" defer></script>
         <script src="./js/login.js" defer></script>
     </body>
