@@ -53,10 +53,17 @@
                         <ul>
                             <li><a href="index.html">Home</a></li>
                             <script>
-                                if (isUser)
-                                    document.write(
-                                        "<li><a href='tax.payer.html'>Tax</a></li>"
-                                    );
+                                if (isUser) {
+                                    var type =
+                                        user.type == "citizen"
+                                            ? "payer"
+                                            : user.type;
+                                }
+                                document.write(
+                                    "<li><a href='tax." +
+                                        type +
+                                        ".html'>Tax</a></li>"
+                                );
                             </script>
                             <li><a href="">Contact</a></li>
                             <script>

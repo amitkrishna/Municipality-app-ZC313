@@ -12,6 +12,11 @@ import javax.persistence.*;
 @Setter
 @ToString
 public class Users {
+    public enum UserType{
+        citizen,
+        officer,
+        admin
+    }
 
     @Id
     @Column(name = "id")
@@ -32,4 +37,9 @@ public class Users {
 
     @Column(name="password", nullable = false)
     private String password;
+
+    @Column(name="type", nullable = false )
+    @Enumerated(EnumType.STRING)
+    private UserType type = UserType.citizen;
+
 }

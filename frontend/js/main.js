@@ -12,6 +12,9 @@ activity = () => {};
 activity.start = () => {
     spinner.start();
 };
+activity.stop = () => {
+    spinner.stop();
+};
 
 messageBox = () => {};
 messageBox.show = (message) => {

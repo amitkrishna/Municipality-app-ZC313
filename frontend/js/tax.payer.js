@@ -11,7 +11,7 @@ template.payerHead = () => {
 
     return table;
 };
-template.payerRow = (zone, area, amt, uuid) => {
+template.payerRow = (zone, area, amt, uuid, hasDiscount, isPaid) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
     trbody.setAttribute("uuid", uuid);
@@ -55,42 +55,78 @@ template.payerRow = (zone, area, amt, uuid) => {
     userAmt.appendChild(p);
     eachTax.appendChild(userAmt);
 
-    var userDisc = document.createElement("div");
-    userDisc.setAttribute("class", "user-discount");
-    var button = document.createElement("button");
-    button.setAttribute("class", "button");
-    button.setAttribute("uuid", uuid);
-    button.setAttribute("onclick", "discount();");
-    button.innerHTML = "Raise Discount";
+    if (!hasDiscount) {
+        var userDisc = document.createElement("div");
+        userDisc.setAttribute("class", "user-discount");
+        var button = document.createElement("button");
+        button.setAttribute("class", "button");
+        button.setAttribute("uuid", uuid);
+        button.setAttribute("onclick", "discount();");
+        button.innerHTML = "Raise Discount";
 
-    userDisc.appendChild(button);
-    eachTax.appendChild(userDisc);
+        userDisc.appendChild(button);
+        eachTax.appendChild(userDisc);
+    }
 
-    var userPay = document.createElement("div");
-    userPay.setAttribute("class", "user-pay");
-    var button = document.createElement("button");
-    button.setAttribute("class", "button");
-    button.setAttribute("uuid", uuid);
-    button.setAttribute("onclick", "pay();");
-    button.innerHTML = "Pay";
+    if (!isPaid) {
+        var userPay = document.createElement("div");
+        userPay.setAttribute("class", "user-pay");
+        var button = document.createElement("button");
+        button.setAttribute("class", "button");
+        button.setAttribute("uuid", uuid);
+        button.setAttribute("onclick", "pay();");
+        button.innerHTML = "Pay";
 
-    userPay.appendChild(button);
-    eachTax.appendChild(userPay);
+        userPay.appendChild(button);
+        eachTax.appendChild(userPay);
+    }
 
     td.appendChild(eachTax);
     trbody.appendChild(td);
 
     return trbody;
 };
+activity.start();
 $(".table-container").append(template.payerHead());
-$(".table").append(template.payerRow("a", "b", "c", "12"));
+// $(".table").append(template.payerRow("a", "b", "c", "12"));
+
+$.ajax({
+    type: "GET",
+    url: "http://localhost:8080/api/v1/property-tax/show/" + user.email,
+    contentType: "application/json",
+    dataType: "json",
+    success: (oSuccess) => {
+        if (oSuccess.length > 0) {
+            oSuccess.forEach((value, key) => {
+                $(".table").append(
+                    template.payerRow(
+                        value.zone,
+                        value.area,
+                        value.taxPayable,
+                        value.id,
+                        value.discountRaised,
+                        value.paid
+                    )
+                );
+            });
+        }
+    },
+    error: (oError) => {
+        if (oError.status == 404) {
+            $(".table-container").append("No Data found!");
+            activity.stop();
+        } else messageBox.show("Error connecting");
+    },
+});
 
 pay = () => {
     activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/",
+        url:
+            "http://localhost:8080/api/v1/property-tax/pay/" +
+            event.currentTarget.getAttribute("uuid"),
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
@@ -107,8 +143,8 @@ discount = () => {
     activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
     $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/",
+        type: "PATCH",
+        url: "http://localhost:8080/api/v1/property-tax/raise-discount",
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
@@ -127,18 +163,18 @@ addPropertyTax = () => {
     var formData = new Object();
     formData["zone"] = $("#zone").val();
     formData["area"] = $("#area").val();
-    formData["raiseDiscount"] = $("#raiseDiscount").is(":checked");
+    formData["discountRaised"] = $("#raiseDiscount").is(":checked");
     formData["selfOccupied"] = $("#selfOccupied").is(":checked");
     formData["email"] = user.email;
+    formData["discount"] = 0;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/",
+        url: "http://localhost:8080/api/v1/property-tax/calculate",
         data: JSON.stringify(formData),
         contentType: "application/json",
         dataType: "json",
         success: (isValid) => {
-            if (isValid) messageBox.show("Property Added");
-            else messageBox.show("Error while adding property!");
+            window.location.href = "tax.payer.html";
         },
         error: () => {
             messageBox.show("Error while adding property!");

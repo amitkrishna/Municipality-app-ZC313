@@ -77,57 +77,55 @@ template.adminRow = (zone, area, amt, email, uuid) => {
     userAppr.appendChild(button);
     eachTax.appendChild(userAppr);
 
-    var userDeny = document.createElement("div");
-    userDeny.setAttribute("class", "user-deny");
-    var button = document.createElement("button");
-    button.setAttribute("class", "button");
-    button.setAttribute("uuid", uuid);
-    button.setAttribute("onclick", "deny();");
-    button.innerHTML = "Deny";
-
-    userDeny.appendChild(button);
-    eachTax.appendChild(userDeny);
-
     td.appendChild(eachTax);
     trbody.appendChild(td);
 
     return trbody;
 };
 $(".table-container").append(template.adminHead());
-$(".table").append(template.adminRow("a", "b", "c", "test@test.com", "12"));
+// $(".table").append(template.adminRow("a", "b", "c", "test@test.com", "12"));
+
+$.ajax({
+    type: "GET",
+    url: "http://localhost:8080/api/v1/property-tax/approval-pending",
+    contentType: "application/json",
+    dataType: "json",
+    success: (oSuccess) => {
+        if (oSuccess.length > 0) {
+            oSuccess.forEach((value, key) => {
+                $(".table").append(
+                    template.adminRow(
+                        value.zone,
+                        value.area,
+                        value.taxPayable,
+                        value.email,
+                        value.id
+                    )
+                );
+            });
+        }
+    },
+    error: (oError) => {
+        $(".table-container").append("No Data found!");
+        activity.stop();
+    },
+});
 
 approve = () => {
     activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/",
+        url:
+            "http://localhost:8080/api/v1/property-tax/approve-discount/" +
+            event.currentTarget.getAttribute("uuid"),
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
-            if (oSuccess) messageBox.show("Approved");
-            else messageBox.show("Error while approving!");
+            window.location.href = "tax.admin.html";
         },
         error: () => {
             messageBox.show("Error while approving");
-        },
-    });
-};
-
-deny = () => {
-    activity.start();
-    console.log(event.currentTarget.getAttribute("uuid"));
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/",
-        contentType: "application/json",
-        dataType: "json",
-        success: (oSuccess) => {
-            if (oSuccess) messageBox.show("Denied");
-            else messageBox.show("Error while denying!");
-        },
-        error: () => {
-            messageBox.show("Error while denying");
         },
     });
 };

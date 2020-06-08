@@ -11,7 +11,7 @@ template.officerHead = () => {
 
     return table;
 };
-template.officerRow = (zone, area, amt, email, uuid) => {
+template.officerRow = (zone, area, amt, email, uuid, isSend) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
     trbody.setAttribute("uuid", uuid);
@@ -66,36 +66,66 @@ template.officerRow = (zone, area, amt, email, uuid) => {
     userEmail.appendChild(p);
     eachTax.appendChild(userEmail);
 
-    var userAppr = document.createElement("div");
-    userAppr.setAttribute("class", "user-approval");
-    var button = document.createElement("button");
-    button.setAttribute("class", "button");
-    button.setAttribute("uuid", uuid);
-    button.setAttribute("onclick", "sendForApproval();");
-    button.innerHTML = "Send for Approval";
+    if (!isSend) {
+        var userAppr = document.createElement("div");
+        userAppr.setAttribute("class", "user-approval");
+        var button = document.createElement("button");
+        button.setAttribute("class", "button");
+        button.setAttribute("uuid", uuid);
+        button.setAttribute("onclick", "sendForApproval();");
+        button.innerHTML = "Send for Approval";
 
-    userAppr.appendChild(button);
-    eachTax.appendChild(userAppr);
+        userAppr.appendChild(button);
+        eachTax.appendChild(userAppr);
+    }
 
     td.appendChild(eachTax);
     trbody.appendChild(td);
 
     return trbody;
 };
+activity.start();
 $(".table-container").append(template.officerHead());
-$(".table").append(template.officerRow("a", "b", "c", "test@test.com", "12"));
+// $(".table").append(template.payerRow("a", "b", "c", "12"));
+
+$.ajax({
+    type: "GET",
+    url: "http://localhost:8080/api/v1/property-tax/discount-raised",
+    contentType: "application/json",
+    dataType: "json",
+    success: (oSuccess) => {
+        if (oSuccess.length > 0) {
+            oSuccess.forEach((value, key) => {
+                $(".table").append(
+                    template.officerRow(
+                        value.zone,
+                        value.area,
+                        value.taxPayable,
+                        value.email,
+                        value.id,
+                        value.sentForApproval
+                    )
+                );
+            });
+        }
+    },
+    error: (oError) => {
+        $(".table-container").append("No Data found!");
+    },
+});
 
 sendForApproval = () => {
     activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/",
+        url:
+            "http://localhost:8080/api/v1/property-tax/send-for-approval/" +
+            event.currentTarget.getAttribute("uuid"),
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
-            if (oSuccess) messageBox.show("Approval Send");
-            else messageBox.show("Error while sending approval!");
+            window.location.href = "tax.officer.html";
         },
         error: () => {
             messageBox.show("Error while sending approval!");
