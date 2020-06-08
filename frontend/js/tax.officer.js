@@ -11,10 +11,10 @@ template.officerHead = () => {
 
     return table;
 };
-template.officerRow = (zone, area, amt, email, uuid, isSend) => {
+template.officerRow = (value) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
-    trbody.setAttribute("uuid", uuid);
+    trbody.setAttribute("uuid", value.id);
 
     var td = document.createElement("td");
     trbody.appendChild(td);
@@ -26,7 +26,7 @@ template.officerRow = (zone, area, amt, email, uuid, isSend) => {
     userZone.setAttribute("class", "user-zone");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = zone;
+    span.innerHTML = value.zone;
 
     p.innerHTML = "Zone: ";
     p.appendChild(span);
@@ -37,7 +37,7 @@ template.officerRow = (zone, area, amt, email, uuid, isSend) => {
     userArea.setAttribute("class", "user-area");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = area;
+    span.innerHTML = value.area;
 
     p.innerHTML = "Area: ";
     p.appendChild(span);
@@ -48,7 +48,7 @@ template.officerRow = (zone, area, amt, email, uuid, isSend) => {
     userAmt.setAttribute("class", "user-amt");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = amt;
+    span.innerHTML = value.taxPayable;
 
     p.innerHTML = "Tax Payable: ";
     p.appendChild(span);
@@ -59,19 +59,74 @@ template.officerRow = (zone, area, amt, email, uuid, isSend) => {
     userEmail.setAttribute("class", "user-email");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = email;
+    span.innerHTML = value.email;
 
     p.innerHTML = "Email: ";
     p.appendChild(span);
     userEmail.appendChild(p);
     eachTax.appendChild(userEmail);
 
-    if (!isSend) {
+    var paid = document.createElement("div");
+    paid.setAttribute("class", "user-paid");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = value.paid ? "Yes" : "No";
+
+    p.innerHTML = "Paid: ";
+    p.appendChild(span);
+    paid.appendChild(p);
+    eachTax.appendChild(paid);
+
+    var discountRaised = document.createElement("div");
+    discountRaised.setAttribute("class", "user-discountRaised");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = discountRaised.paid ? "Yes" : "No";
+
+    p.innerHTML = "Discount Raised: ";
+    p.appendChild(span);
+    discountRaised.appendChild(p);
+    eachTax.appendChild(discountRaised);
+
+    var discountApproved = document.createElement("div");
+    discountApproved.setAttribute("class", "user-discountApproved");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = discountApproved.paid ? "Yes" : "No";
+
+    p.innerHTML = "Discount Approved: ";
+    p.appendChild(span);
+    discountApproved.appendChild(p);
+    eachTax.appendChild(discountApproved);
+
+    var dateCreated = document.createElement("div");
+    dateCreated.setAttribute("class", "user-dateCreated");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = modifyDate(value.dateCreated);
+
+    p.innerHTML = "Date Created: ";
+    p.appendChild(span);
+    dateCreated.appendChild(p);
+    eachTax.appendChild(dateCreated);
+
+    var dateModified = document.createElement("div");
+    dateModified.setAttribute("class", "user-dateModified");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = modifyDate(value.dateModified);
+
+    p.innerHTML = "Date Modified: ";
+    p.appendChild(span);
+    dateModified.appendChild(p);
+    eachTax.appendChild(dateModified);
+
+    if (!value.sendForApproval) {
         var userAppr = document.createElement("div");
         userAppr.setAttribute("class", "user-approval");
         var button = document.createElement("button");
         button.setAttribute("class", "button");
-        button.setAttribute("uuid", uuid);
+        button.setAttribute("uuid", value.id);
         button.setAttribute("onclick", "sendForApproval();");
         button.innerHTML = "Send for Approval";
 
@@ -96,16 +151,7 @@ $.ajax({
     success: (oSuccess) => {
         if (oSuccess.length > 0) {
             oSuccess.forEach((value, key) => {
-                $(".table").append(
-                    template.officerRow(
-                        value.zone,
-                        value.area,
-                        value.taxPayable,
-                        value.email,
-                        value.id,
-                        value.sentForApproval
-                    )
-                );
+                $(".table").append(template.officerRow(value));
             });
         }
     },

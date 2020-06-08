@@ -11,7 +11,15 @@ template.payerHead = () => {
 
     return table;
 };
-template.payerRow = (zone, area, amt, uuid, hasDiscount, isPaid) => {
+template.payerRow = (
+    zone,
+    area,
+    amt,
+    uuid,
+    hasDiscount,
+    isPaid,
+    isApproved
+) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
     trbody.setAttribute("uuid", uuid);
@@ -54,6 +62,17 @@ template.payerRow = (zone, area, amt, uuid, hasDiscount, isPaid) => {
     p.appendChild(span);
     userAmt.appendChild(p);
     eachTax.appendChild(userAmt);
+
+    var approved = document.createElement("div");
+    approved.setAttribute("class", "user-approved");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = isApproved ? "Yes" : "No";
+
+    p.innerHTML = "Discount Approved: ";
+    p.appendChild(span);
+    approved.appendChild(p);
+    eachTax.appendChild(approved);
 
     if (!hasDiscount) {
         var userDisc = document.createElement("div");
@@ -105,7 +124,8 @@ $.ajax({
                         value.taxPayable,
                         value.id,
                         value.discountRaised,
-                        value.paid
+                        value.paid,
+                        value.discountApproved
                     )
                 );
             });

@@ -22,6 +22,10 @@
             token.verify();
             if (user == undefined) window.location.href = "login.html";
             else var isUser = true;
+            if (user.type != "admin") {
+                var type = user.type == "citizen" ? "payer" : user.type;
+                window.location.href = "tax." + type + ".html";
+            }
         </script>
         <title>Tax | Municipality</title>
     </head>

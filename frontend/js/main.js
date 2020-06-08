@@ -42,3 +42,8 @@ logout = () => {
     cookie.erase("SSID");
     window.location.href = "login.html";
 };
+
+modifyDate = (date) => {
+    var date = new Date(date);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+};
