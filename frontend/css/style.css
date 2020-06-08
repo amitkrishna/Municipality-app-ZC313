@@ -9,7 +9,7 @@
     box-sizing: border-box;
 }
 
-.layerBlack{
+.layerBlack {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -21,7 +21,7 @@
     opacity: 0.5;
 }
 
-.spinner-main{
+.spinner-main {
     position: fixed;
     z-index: 999;
     top: 50%;
@@ -126,7 +126,7 @@ li {
     list-style: none;
 }
 
-.message{
+.message {
     position: fixed;
     z-index: 999;
     top: 50%;
@@ -135,12 +135,12 @@ li {
     opacity: 0;
 }
 
-.messageHidden{
-    transform: translate(-50%, -50%) scale(1.0);
+.messageHidden {
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
     transition: all 0.15s ease-in;
 }
-.message .container{
+.message .container {
     width: 15vw;
     height: 15vh;
     background: black;
@@ -150,18 +150,18 @@ li {
     border-radius: 20px;
 }
 
-.message p{
+.message p {
     padding-top: 25px;
     font-size: 20px;
 }
 
-.message h3{
+.message h3 {
     cursor: pointer;
     opacity: 0.7;
 }
 
-.message h3:hover{
-    opacity: 1.0;
+.message h3:hover {
+    opacity: 1;
     transition: all 0.1s ease-in;
 }
 
@@ -218,7 +218,6 @@ li {
 .login .text p:nth-child(2) {
     font-size: 17px;
 }
-
 
 .register {
     text-align: center;
@@ -287,4 +286,131 @@ li {
 
 *:focus {
     outline: none;
+}
+
+.line {
+    display: block;
+    margin: 0 auto;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    padding: 1px 10px;
+    width: 90px;
+    border-radius: 5px;
+    border: 0;
+    background: rgb(11, 11, 11);
+    opacity: 0.5;
+}
+
+.tax {
+    text-align: center;
+}
+
+.tax .text {
+    text-align: center;
+    padding: 50px 50px 10px 50px;
+}
+
+.tax .text p:nth-child(1) {
+    font-size: 60px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.tax .text p:nth-child(2) {
+    font-size: 17px;
+}
+
+.tax .zone {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 8px 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 0;
+    background: rgb(11, 11, 11);
+    background: linear-gradient(
+        90deg,
+        rgba(11, 11, 11, 1) 0%,
+        rgba(72, 72, 75, 0.9612219887955182) 50%,
+        rgba(0, 0, 0, 1) 100%
+    );
+    opacity: 0.9;
+    color: white;
+}
+
+.tax option {
+    background: rgb(11, 11, 11);
+    opacity: 0;
+}
+
+.tax .checkbox {
+    /* all: unset; */
+    display: inline;
+    width: 50px;
+}
+
+.tax .table .tr,
+.tax .table .head {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 8px 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 0;
+    opacity: 0.9;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.tax .table .tr:hover {
+    transition: all 0.2s ease-in;
+    background: linear-gradient(
+        90deg,
+        rgba(11, 11, 11, 1) 0%,
+        rgba(72, 72, 75, 0.9612219887955182) 50%,
+        rgba(0, 0, 0, 1) 100%
+    );
+    opacity: 0.9;
+    color: white;
+}
+
+.tax .button {
+    cursor: pointer;
+    padding: 3px 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid rgb(11, 11, 11);
+}
+.tax .table .tr:hover .button {
+    color: white;
+    border: 1px solid #fff;
+}
+.tax .button:hover {
+    background: white;
+    color: black !important;
+}
+.tax .tr p {
+    margin: 2px;
+}
+
+.cert {
+    text-align: center;
+}
+
+.cert .text {
+    text-align: center;
+    padding: 50px 50px 10px 50px;
+}
+
+.cert .text p:nth-child(1) {
+    font-size: 60px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.cert .text p:nth-child(2) {
+    font-size: 17px;
 }

@@ -20,11 +20,14 @@
         <script>
             var user;
             token.verify();
-            if (user != undefined) {
-                window.location.href = "index.html";
+            if (user == undefined) window.location.href = "login.html";
+            else var isUser = true;
+            if (user.type != "admin") {
+                var type = user.type == "citizen" ? "payer" : user.type;
+                window.location.href = "tax." + type + ".html";
             }
         </script>
-        <title>Login | Municipality</title>
+        <title>Tax | Municipality</title>
     </head>
     <body>
         <div class="layerBlack" id="spinnerLayer"></div>
@@ -53,8 +56,21 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
+                            <li><a href="tax.admin.html">Tax</a></li>
+                            <li>
+                                <a href="" onclick="getReport();">Report</a>
+                            </li>
                             <li><a href="">Contact</a></li>
-                            <li><a href="login.html">Sign Up/ Log In</a></li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a onclick='logout();'>Logout</a></li>"
+                                    );
+                                else
+                                    document.write(
+                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
+                                    );
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -67,34 +83,17 @@
                 </div>
             </div>
 
-            <div class="login">
-                <div class="text">
-                    <p>Login In</p>
-                    <p>Manage Your Municipality Account</p>
-                </div>
-                <div class="input">
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        autocomplete="off"
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password"
-                    />
-                    <button id="login">Login</button>
-                    <p>
-                        Don't have an account?
-                        <a href="register.html">Register</a>
-                    </p>
+            <div class="tax">
+                <br />
+                <br />
+
+                <div align="center">
+                    <div class="table-container"></div>
                 </div>
             </div>
+
+            <script src="./js/main.js"></script>
+            <script src="./js/tax.admin.js"></script>
         </div>
-        <script src="./js/main.js" defer></script>
-        <script src="./js/login.js" defer></script>
     </body>
 </html>

@@ -20,11 +20,13 @@
         <script>
             var user;
             token.verify();
-            if (user != undefined) {
+            if (user == undefined) window.location.href = "login.html";
+            else var isUser = true;
+            if (user.type != "citizen") {
                 window.location.href = "index.html";
             }
         </script>
-        <title>Login | Municipality</title>
+        <title>Certificate | Municipality</title>
     </head>
     <body>
         <div class="layerBlack" id="spinnerLayer"></div>
@@ -53,8 +55,27 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
+                            <li><a href="tax.payer.html">Tax</a></li>
+                            <li>
+                                <a href="" onclick="getReport();">Report</a>
+                            </li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a href='certificate.payer.html'>Add</a></li>"
+                                    );
+                            </script>
                             <li><a href="">Contact</a></li>
-                            <li><a href="login.html">Sign Up/ Log In</a></li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a onclick='logout();'>Logout</a></li>"
+                                    );
+                                else
+                                    document.write(
+                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
+                                    );
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -67,34 +88,37 @@
                 </div>
             </div>
 
-            <div class="login">
+            <div class="cert">
                 <div class="text">
-                    <p>Login In</p>
-                    <p>Manage Your Municipality Account</p>
+                    <p>Certificate</p>
+                    <p>Apply Birth Certificate</p>
                 </div>
                 <div class="input">
+                    <input type="text" placeholder="Name" id="birthName" />
                     <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        autocomplete="off"
+                        type="datetime-local"
+                        id="birthTimestamp"
+                        name="birthTimestamp"
                     />
+                    <button id="birth" onclick="applyBirth();">Apply</button>
+                </div>
+
+                <div class="text">
+                    <p></p>
+                    <p>Apply Death Certificate</p>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Name" id="deathName" />
                     <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password"
+                        type="datetime-local"
+                        id="deathTimestamp"
+                        name="deathTimestamp"
                     />
-                    <button id="login">Login</button>
-                    <p>
-                        Don't have an account?
-                        <a href="register.html">Register</a>
-                    </p>
+                    <button id="death" onclick="applyDeath();">Apply</button>
                 </div>
             </div>
+            <script src="./js/main.js"></script>
+            <script src="./js/certificate.payer.js"></script>
         </div>
-        <script src="./js/main.js" defer></script>
-        <script src="./js/login.js" defer></script>
     </body>
 </html>
