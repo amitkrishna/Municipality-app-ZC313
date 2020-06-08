@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bits.backend.models.TaxDetails;
-import com.bits.backend.models.Discount;
 import com.bits.backend.services.PropertyTaxService;
 
 
@@ -27,6 +25,7 @@ import com.bits.backend.services.PropertyTaxService;
 @RequestMapping("api/v1/property-tax")
 public class PropertyTaxController {
 
+	static final double DISCOUNT = 0.125;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -47,7 +46,6 @@ public class PropertyTaxController {
 		 * 	zone: char,
 		 *  area: double,
 		 *  discountRaised: boolean,
-		 *  discount: double,
 		 *  selfOccupied: boolean
 		 *  }
 		 */
@@ -60,33 +58,40 @@ public class PropertyTaxController {
 		
 			case 'A':
 			case 'a':
-				taxRate = 2.5;
+				taxRate = 25;
 				break;
 			case 'B':
 			case 'b':
-				taxRate = 2;
+				taxRate = 20;
 				break;
 			case 'C':
 			case 'c':
-				taxRate = 1.8;
+				taxRate = 18;
 				break;
 			case 'D':
 			case 'd':
-				taxRate = 1.6;
+				taxRate = 16;
 				break;
 			case 'E':
 			case 'e':
-				taxRate = 1.2;
+				taxRate = 12;
 				break;
 			case 'F':
 			case 'f':
 			default:
-				taxRate = 1;
+				taxRate = 10;
 		}
 		
 		taxRate = (taxDetails.getSelfOccupied())?taxRate: 2*taxRate;
+		double taxPayable = taxRate * taxDetails.getArea();
 
-		taxDetails.setTaxPayable(taxRate * taxDetails.getArea());
+		if(taxDetails.isDiscountRaised()){
+			double discountAmt = DISCOUNT * taxPayable;
+			taxPayable = taxPayable - discountAmt;
+			taxDetails.setDiscount(discountAmt);
+		}
+		
+		taxDetails.setTaxPayable(taxPayable);
 		taxDetails.setDateCreated(LocalDate.now());
 		taxDetails.setDateModified(LocalDateTime.now());
 
@@ -116,7 +121,7 @@ public class PropertyTaxController {
 		return res;
 	}
 
-	@PatchMapping("/pay/{id}")
+	@GetMapping("/pay/{id}")
 	public HttpEntity<TaxDetails> payTax(@PathVariable Long id){
 		HttpStatus status;
 		TaxDetails response;
@@ -134,26 +139,32 @@ public class PropertyTaxController {
 		return res;
 	}
 
-	@PatchMapping("/raise-discount")
-	public HttpEntity<TaxDetails> raiseDiscount(@RequestBody Discount discount){
-	/**
-	 * Request body = {
-	 * 	id: long,
-	 * 	discount: double
-	 * }
-	 * 
-	 */
+	@GetMapping("/raise-discount/{id}")
+	public HttpEntity<TaxDetails> raiseDiscount(@PathVariable long id){
 		HttpStatus status;
 		TaxDetails response;
-		if(ptService.raiseDiscount(discount.getId(), discount.getDiscount())){
-			status = HttpStatus.OK;
-			response = ptService.findById(discount.getId());
-		}
-		else{
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+		TaxDetails td = ptService.findById(id);
+		if(td.isDiscountRaised()){
+			status = HttpStatus.CONFLICT;
 			response = new TaxDetails();
 		}
-
+		else{
+			double taxPayable = td.getTaxPayable();
+			double discount = DISCOUNT * taxPayable;
+			log.info("Discount:"+discount);
+			td.setDiscountRaised(true);
+			td.setDiscount(discount);
+			td.setTaxPayable(taxPayable - discount);
+			if(ptService.raiseDiscount(id, discount)){
+				status = HttpStatus.OK;
+				response = td;
+			}
+			else{
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				response = new TaxDetails();
+			}
+		}
 		HttpEntity<TaxDetails> res = new ResponseEntity<TaxDetails>(response, status);
 		return res;
 	}

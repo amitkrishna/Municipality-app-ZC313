@@ -188,7 +188,7 @@ public class TaxDetails {
 		this.dateModified = LocalDateTime.now();
 	}
 	
-	public TaxDetails(String email, char zone, double area, boolean selfOccupied, boolean discountRaised, double discount) {
+	public TaxDetails(String email, char zone, double area, boolean selfOccupied, boolean discountRaised) {
 		
 		this.email = email;
 		this.taxPayable = 0.0;
@@ -198,7 +198,7 @@ public class TaxDetails {
 		this.discountRaised = discountRaised;
 		this.sentForApproval = false;
 		this.discountApproved = false;
-		this.discount = discount;
+		this.discount = 0.0;
 		this.selfOccupied = selfOccupied;
 		this.dateCreated = LocalDate.now();
 		this.dateModified = LocalDateTime.now();
