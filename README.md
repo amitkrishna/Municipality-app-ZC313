@@ -7,7 +7,8 @@ Object Oriented Programming and Design (S2-19_SESAPZC313) Assignment work
 
 
 ## Class Diagram
-Class Diagram
+![Municipalityapp_class_diagram](https://user-images.githubusercontent.com/23555312/84006832-0c4bd280-a98d-11ea-9dd4-1a4232ae9c25.png)
+
 ## Sequence Diagram
 
 
