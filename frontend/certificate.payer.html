@@ -22,12 +22,11 @@
             token.verify();
             if (user == undefined) window.location.href = "login.html";
             else var isUser = true;
-            if (user.type != "admin") {
-                var type = user.type == "citizen" ? "payer" : user.type;
-                window.location.href = "tax." + type + ".html";
+            if (user.type != "citizen") {
+                window.location.href = "index.html";
             }
         </script>
-        <title>Tax | Municipality</title>
+        <title>Certificate | Municipality</title>
     </head>
     <body>
         <div class="layerBlack" id="spinnerLayer"></div>
@@ -56,10 +55,16 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
-                            <li><a href="tax.admin.html">Tax</a></li>
+                            <li><a href="tax.payer.html">Tax</a></li>
                             <li>
                                 <a href="" onclick="getReport();">Report</a>
                             </li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a href='certificate.payer.html'>Add</a></li>"
+                                    );
+                            </script>
                             <li><a href="">Contact</a></li>
                             <script>
                                 if (isUser)
@@ -83,17 +88,37 @@
                 </div>
             </div>
 
-            <div class="tax">
-                <br />
-                <br />
+            <div class="cert">
+                <div class="text">
+                    <p>Certificate</p>
+                    <p>Apply Birth Certificate</p>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Name" id="birthName" />
+                    <input
+                        type="datetime-local"
+                        id="birthTimestamp"
+                        name="birthTimestamp"
+                    />
+                    <button id="birth" onclick="applyBirth();">Apply</button>
+                </div>
 
-                <div align="center">
-                    <div class="table-container"></div>
+                <div class="text">
+                    <p></p>
+                    <p>Apply Death Certificate</p>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Name" id="deathName" />
+                    <input
+                        type="datetime-local"
+                        id="deathTimestamp"
+                        name="deathTimestamp"
+                    />
+                    <button id="death" onclick="applyDeath();">Apply</button>
                 </div>
             </div>
-
             <script src="./js/main.js"></script>
-            <script src="./js/tax.admin.js"></script>
+            <script src="./js/certificate.payer.js"></script>
         </div>
     </body>
 </html>
