@@ -129,8 +129,7 @@ addPropertyTax = () => {
     formData["area"] = $("#area").val();
     formData["raiseDiscount"] = $("#raiseDiscount").is(":checked");
     formData["selfOccupied"] = $("#selfOccupied").is(":checked");
-    formData["email"] = $("#password").val();
-
+    formData["email"] = user.email;
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/",

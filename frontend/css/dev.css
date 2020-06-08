@@ -6,10 +6,11 @@
 .each-dev {
     cursor: pointer;
     opacity: 0.8;
-    filter: grayscale(100%);
+    filter: grayscale(70%);
+    transition: all 0.1s ease-in-out;
 }
 .each-dev:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
     transition: all 0.15s ease-in-out;
     opacity: 1;
     filter: grayscale(0%);
@@ -17,9 +18,13 @@
 .dev-img {
     display: inline-block;
 }
+.dev-img img {
+    width: 175px;
+    border-radius: 50%;
+}
 .dev-name {
     display: inline-block;
-    transform: translateY(-55px);
+    transform: translateY(-80px);
     padding-left: 20px;
 }
 
