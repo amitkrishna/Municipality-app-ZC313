@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.png" />
         <script>
             var domLoaded = false;
             window.addEventListener("DOMContentLoaded", (event) => {
@@ -14,6 +15,14 @@
         </script>
         <link rel="stylesheet" href="./css/style.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./js/cookie.js"></script>
+        <script src="./js/verifyToken.js"></script>
+        <script>
+            var user;
+            token.verify();
+            if (user == undefined) window.location.href = "login.html";
+            else var isUser = true;
+        </script>
         <title>Tax | Municipality</title>
     </head>
     <body>
@@ -43,11 +52,18 @@
                     <div class="menu-list">
                         <ul>
                             <li><a href="index.html">Home</a></li>
-                            <li><a href="">Tax</a></li>
-                            <li><a href="">Enquiry</a></li>
-                            <li><a href="">Pay</a></li>
+                            <li><a href="tax.payer.html">Tax</a></li>
                             <li><a href="">Contact</a></li>
-                            <li><a href="login.html">Sign Up/ Log In</a></li>
+                            <script>
+                                if (isUser)
+                                    document.write(
+                                        "<li><a onclick='logout();'>Logout</a></li>"
+                                    );
+                                else
+                                    document.write(
+                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
+                                    );
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -92,60 +108,22 @@
                         class="checkbox"
                     />
                     <label for="selfOccupied">Self-Occupied?</label>
-                    <input type="email" placeholder="Email" id="email" hidden />
-
-                    <button id="tax">Add</button>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        id="email"
+                        style="display: none;"
+                    />
+                    <br />
+                    <button id="tax" onclick="addPropertyTax();">Add</button>
                 </div>
                 <div class="line"></div>
                 <div align="center">
-                    <div class="table-container">
-                        <!-- <table class="table">
-                            <tr class="head">
-                                <th>Property Tax</th>
-                            </tr>
-                            <tr class="tr">
-                                <td>
-                                    <div class="each-tax">
-                                        <div class="user-zone">
-                                            <p>
-                                                Zone:
-                                                <span>A</span>
-                                            </p>
-                                        </div>
-                                        <div class="user-area">
-                                            <p>Area: <span>B</span></p>
-                                        </div>
-                                        <div class="user-amt">
-                                            <p>
-                                                Tax Payable: <span>100</span
-                                                ><span> INR</span>
-                                            </p>
-                                        </div>
-                                        <div class="user-discount">
-                                            <button
-                                                disabled="disabled"
-                                                class="button"
-                                            >
-                                                Raise Discount
-                                            </button>
-                                        </div>
-                                        <div class="user-pay">
-                                            <button class="button">Pay</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table> -->
-                    </div>
+                    <div class="table-container"></div>
                 </div>
             </div>
 
             <script src="./js/main.js"></script>
-            <script src="./js/cookie.js"></script>
-            <script src="./js/verifyToken.js"></script>
-            <script>
-                token.verify();
-            </script>
             <script src="./js/tax.payer.js" defer></script>
         </div>
     </body>

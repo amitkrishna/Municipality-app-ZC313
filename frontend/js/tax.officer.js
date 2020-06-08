@@ -86,5 +86,19 @@ $(".table-container").append(template.officerHead());
 $(".table").append(template.officerRow("a", "b", "c", "test@test.com", "12"));
 
 sendForApproval = () => {
+    activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/",
+        contentType: "application/json",
+        dataType: "json",
+        success: (oSuccess) => {
+            if (oSuccess) messageBox.show("Approval Send");
+            else messageBox.show("Error while sending approval!");
+        },
+        error: () => {
+            messageBox.show("Error while sending approval!");
+        },
+    });
 };

@@ -14,15 +14,14 @@ $("#login").click(() => {
                 contentType: "application/json",
                 dataType: "json",
                 success: (oUser) => {
-                    if(oUser == "" || oUser == null || oUser == "null")
+                    if (oUser == "" || oUser == null || oUser == "null")
                         messageBox.show("Error! Invalid Credentials");
-                    else{
+                    else {
                         cookie.set("SSID", oUser.token, 7);
-                        // messageBox.show("Error while Registering!");
+                        window.location.href = "index.html";
                     }
                 },
                 error: (oError) => {
-                    debugger;
                     messageBox.show("Error while Registering!");
                 },
             });

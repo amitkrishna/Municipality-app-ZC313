@@ -86,9 +86,63 @@ $(".table-container").append(template.payerHead());
 $(".table").append(template.payerRow("a", "b", "c", "12"));
 
 pay = () => {
+    activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/",
+        contentType: "application/json",
+        dataType: "json",
+        success: (oSuccess) => {
+            if (oSuccess) messageBox.show("Raise Dicount Enabled");
+            else messageBox.show("Error while enabling raise discount!");
+        },
+        error: () => {
+            messageBox.show("Error while enabling raise discount!");
+        },
+    });
 };
 
 discount = () => {
+    activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/",
+        contentType: "application/json",
+        dataType: "json",
+        success: (oSuccess) => {
+            if (oSuccess) messageBox.show("Raise Dicount Enabled");
+            else messageBox.show("Error while enabling raise discount!");
+        },
+        error: () => {
+            messageBox.show("Error while enabling raise discount!");
+        },
+    });
+};
+
+addPropertyTax = () => {
+    activity.start();
+
+    var formData = new Object();
+    formData["zone"] = $("#zone").val();
+    formData["area"] = $("#area").val();
+    formData["raiseDiscount"] = $("#raiseDiscount").is(":checked");
+    formData["selfOccupied"] = $("#selfOccupied").is(":checked");
+    formData["email"] = $("#password").val();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/",
+        data: JSON.stringify(formData),
+        contentType: "application/json",
+        dataType: "json",
+        success: (isValid) => {
+            if (isValid) messageBox.show("Property Added");
+            else messageBox.show("Error while adding property!");
+        },
+        error: () => {
+            messageBox.show("Error while adding property!");
+        },
+    });
 };

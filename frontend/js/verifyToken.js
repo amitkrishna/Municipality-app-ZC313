@@ -11,13 +11,20 @@ token.verify = () => {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/api/login/check",
+            async: false,
             data: JSON.stringify(token),
             contentType: "application/json",
             dataType: "json",
-            success: (oUser) => {},
-            error: (oError) => {},
+            success: (oUser) => {
+                if (oUser.id != 0) user = oUser;
+                return true;
+            },
+            error: (oError) => {
+                return false;
+            },
         });
     } else {
         this.token.userNotLogged();
+        return false;
     }
 };
