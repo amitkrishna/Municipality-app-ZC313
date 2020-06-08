@@ -58,13 +58,17 @@
                                         user.type == "citizen"
                                             ? "payer"
                                             : user.type;
+                                    document.write(
+                                        "<li><a href='tax." +
+                                            type +
+                                            ".html'>Tax</a></li>"
+                                    );
+                                    document.write(
+                                        "<li><a href='' onclick=''>Report</a></li>"
+                                    );
                                 }
-                                document.write(
-                                    "<li><a href='tax." +
-                                        type +
-                                        ".html'>Tax</a></li>"
-                                );
                             </script>
+
                             <li><a href="">Contact</a></li>
                             <script>
                                 if (isUser) {
