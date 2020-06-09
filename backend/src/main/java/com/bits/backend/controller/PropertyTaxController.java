@@ -56,33 +56,33 @@ public class PropertyTaxController {
 		double taxRate = 0;
 		switch(taxDetails.getZone()) {
 		
-			case 'A':
-			case 'a':
+			case "A":
+			case "a":
 				taxRate = 25;
 				break;
-			case 'B':
-			case 'b':
+			case "B":
+			case "b":
 				taxRate = 20;
 				break;
-			case 'C':
-			case 'c':
+			case "C":
+			case "c":
 				taxRate = 18;
 				break;
-			case 'D':
-			case 'd':
+			case "D":
+			case "d":
 				taxRate = 16;
 				break;
-			case 'E':
-			case 'e':
+			case "E":
+			case "e":
 				taxRate = 12;
 				break;
-			case 'F':
-			case 'f':
+			case "F":
+			case "f":
 			default:
 				taxRate = 10;
 		}
 		
-		taxRate = (taxDetails.getSelfOccupied())?taxRate: 2*taxRate;
+		taxRate = (taxDetails.isSelfOccupied())?taxRate: 2*taxRate;
 		double taxPayable = taxRate * taxDetails.getArea();
 
 		if(taxDetails.isDiscountRaised()){

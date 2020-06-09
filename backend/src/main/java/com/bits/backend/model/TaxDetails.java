@@ -81,11 +81,11 @@ public class TaxDetails {
 		this.email = email;
 	}
 
-	public char getZone() {
+	public String getZone() {
 		return zone;
 	}
 
-	public void setZone(char zone) {
+	public void setZone(String zone) {
 		this.zone = zone;
 	}
 
@@ -172,7 +172,7 @@ public class TaxDetails {
 	public TaxDetails() {	}
 	
 	
-	public TaxDetails(String email, char zone, double area, boolean selfOccupied) {
+	public TaxDetails(String email, String zone, double area, boolean selfOccupied) {
 	
 		this.email = email;
 		this.taxPayable = 0.0;
@@ -188,7 +188,7 @@ public class TaxDetails {
 		this.dateModified = LocalDateTime.now();
 	}
 	
-	public TaxDetails(String email, char zone, double area, boolean selfOccupied, boolean discountRaised) {
+	public TaxDetails(String email, String zone, double area, boolean selfOccupied, boolean discountRaised) {
 		
 		this.email = email;
 		this.taxPayable = 0.0;
