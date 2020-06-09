@@ -2,7 +2,6 @@ package com.bits.backend.service;
 
 import com.bits.backend.model.Users;
 import com.bits.backend.repository.UsersRepository;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

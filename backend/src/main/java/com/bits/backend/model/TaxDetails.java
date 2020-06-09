@@ -25,7 +25,7 @@ public class TaxDetails {
 	
 
 	@Column(name="zone")
-	private char zone;
+	private String zone;
 	
 
 	@Column(name="area")
@@ -153,7 +153,7 @@ public class TaxDetails {
 		this.dateModified = dateModified;
 	}
 	
-	public boolean getSelfOccupied(){
+	public boolean isSelfOccupied(){
 		return selfOccupied;
 	}
 
@@ -161,7 +161,7 @@ public class TaxDetails {
 		this.selfOccupied = selfOccupied;
 	}
 
-	public boolean getSentForApproval(){
+	public boolean isSentForApproval(){
 		return sentForApproval;
 	}
 
