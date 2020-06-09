@@ -20,3 +20,6 @@ Object Oriented Programming and Design (S2-19_SESAPZC313) Assignment work
 ## Activity Diagram - SWIM Lane
 
 ![MunicipalityApp_Activity_swimlane](https://user-images.githubusercontent.com/23555312/84153939-23212080-aa84-11ea-8778-0ef226eccc63.png)
+
+
+### ** Tech Stack Java Spring boot, HTML , JS ,CSS.
