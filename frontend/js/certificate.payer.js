@@ -37,9 +37,20 @@ template.certRow = (value) => {
     userArea.setAttribute("class", "user-datetime");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = value.date + "T" + value.time;
+    span.innerHTML = value.date;
 
-    p.innerHTML = "Date-Time: ";
+    p.innerHTML = "Date: ";
+    p.appendChild(span);
+    userArea.appendChild(p);
+    eachTax.appendChild(userArea);
+
+    var userArea = document.createElement("div");
+    userArea.setAttribute("class", "user-datetime");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = value.time;
+
+    p.innerHTML = "Time: ";
     p.appendChild(span);
     userArea.appendChild(p);
     eachTax.appendChild(userArea);
@@ -48,7 +59,10 @@ template.certRow = (value) => {
     userAmt.setAttribute("class", "user-type");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = value.category + " Certificate";
+    span.innerHTML =
+        value.category.charAt(0).toUpperCase() +
+        value.category.slice(1) +
+        " Certificate";
 
     p.innerHTML = "Type: ";
     p.appendChild(span);
