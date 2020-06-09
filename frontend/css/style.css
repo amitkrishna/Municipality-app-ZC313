@@ -414,3 +414,21 @@ li {
 .cert .text p:nth-child(2) {
     font-size: 17px;
 }
+
+.certficate {
+    text-align: center;
+}
+
+.certficate .text {
+    text-align: center;
+    padding: 50px 50px 10px 50px;
+}
+
+.certficate .text p:nth-child(1) {
+    font-size: 60px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.certficate .text p:nth-child(2) {
+    font-size: 17px;
+}
