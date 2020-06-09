@@ -14,6 +14,12 @@ Object Oriented Programming and Design (S2-19_SESAPZC313) Assignment work
 
 
 ## Sequence Diagram
+![sequence  (2)](https://user-images.githubusercontent.com/23555312/84156199-d8ed6e80-aa86-11ea-987c-15ba56c5963a.png)
 
 
 ## Activity Diagram - SWIM Lane
+
+![MunicipalityApp_Activity_swimlane](https://user-images.githubusercontent.com/23555312/84153939-23212080-aa84-11ea-8778-0ef226eccc63.png)
+
+
+### ** Tech Stack Java Spring boot, HTML , JS ,CSS.
