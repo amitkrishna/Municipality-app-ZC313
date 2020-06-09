@@ -15,6 +15,8 @@
         </script>
         <link rel="stylesheet" href="./css/style.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.3/jspdf.plugin.autotable.min.js"></script>
         <script src="./js/cookie.js"></script>
         <script src="./js/verifyToken.js"></script>
         <script>
@@ -57,7 +59,9 @@
                             <li><a href="index.html">Home</a></li>
                             <li><a href="tax.payer.html">Tax</a></li>
                             <li>
-                                <a href="" onclick="getReport();">Report</a>
+                                <a href="#" onclick="generateReport();"
+                                    >Report</a
+                                >
                             </li>
                             <script>
                                 if (isUser)
@@ -65,7 +69,7 @@
                                         "<li><a href='certificate.payer.html'>Add</a></li>"
                                     );
                             </script>
-                            <li><a href="">Contact</a></li>
+
                             <script>
                                 if (isUser)
                                     document.write(
@@ -119,6 +123,7 @@
             </div>
             <script src="./js/main.js"></script>
             <script src="./js/certificate.payer.js"></script>
+            <script src="./js/report.payer.js"></script>
         </div>
     </body>
 </html>

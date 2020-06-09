@@ -22,7 +22,7 @@ $("#login").click(() => {
                     }
                 },
                 error: (oError) => {
-                    messageBox.show("Error while Registering!");
+                    messageBox.show("Error while Login!");
                 },
             });
         } else {

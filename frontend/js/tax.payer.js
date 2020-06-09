@@ -18,7 +18,8 @@ template.payerRow = (
     uuid,
     hasDiscount,
     isPaid,
-    isApproved
+    isApproved,
+    isSelfOccupied
 ) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
@@ -74,6 +75,17 @@ template.payerRow = (
     approved.appendChild(p);
     eachTax.appendChild(approved);
 
+    var selfOccupied = document.createElement("div");
+    selfOccupied.setAttribute("class", "user-selfOccupied");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = isSelfOccupied ? "Yes" : "No";
+
+    p.innerHTML = "Self Occupied: ";
+    p.appendChild(span);
+    selfOccupied.appendChild(p);
+    eachTax.appendChild(selfOccupied);
+
     if (!hasDiscount) {
         var userDisc = document.createElement("div");
         userDisc.setAttribute("class", "user-discount");
@@ -125,7 +137,8 @@ $.ajax({
                         value.id,
                         value.discountRaised,
                         value.paid,
-                        value.discountApproved
+                        value.discountApproved,
+                        value.selfOccupied
                     )
                 );
             });
@@ -150,8 +163,7 @@ pay = () => {
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
-            if (oSuccess) messageBox.show("Raise Dicount Enabled");
-            else messageBox.show("Error while enabling raise discount!");
+            window.location.href = "tax.payer.html";
         },
         error: () => {
             messageBox.show("Error while enabling raise discount!");
@@ -163,13 +175,14 @@ discount = () => {
     activity.start();
     console.log(event.currentTarget.getAttribute("uuid"));
     $.ajax({
-        type: "PATCH",
-        url: "http://localhost:8080/api/v1/property-tax/raise-discount",
+        type: "GET",
+        url:
+            "http://localhost:8080/api/v1/property-tax/raise-discount/" +
+            event.currentTarget.getAttribute("uuid"),
         contentType: "application/json",
         dataType: "json",
         success: (oSuccess) => {
-            if (oSuccess) messageBox.show("Raise Dicount Enabled");
-            else messageBox.show("Error while enabling raise discount!");
+            window.location.href = "tax.payer.html";
         },
         error: () => {
             messageBox.show("Error while enabling raise discount!");

@@ -16,6 +16,8 @@
         <link rel="stylesheet" href="./css/style.css" />
         <link rel="stylesheet" href="./css/dev.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.3/jspdf.plugin.autotable.min.js"></script>
         <script src="./js/cookie.js"></script>
         <script src="./js/verifyToken.js"></script>
         <script>
@@ -64,12 +66,15 @@
                                             ".html'>Tax</a></li>"
                                     );
                                     document.write(
-                                        "<li><a href='' onclick=''>Report</a></li>"
+                                        "<li><a href='#' onclick='generateReport();'>Report</a></li>"
                                     );
+                                    if (type == "payer")
+                                        document.write(
+                                            "<li><a href='certificate.payer.html'>Add</a></li>"
+                                        );
                                 }
                             </script>
 
-                            <li><a href="">Contact</a></li>
                             <script>
                                 if (isUser) {
                                     document.write(
@@ -140,5 +145,11 @@
             </div>
         </div>
         <script src="./js/main.js"></script>
+        <script>
+            if (isUser) {
+                var type = user.type == "citizen" ? "payer" : user.type;
+                document.write("<script src='./js/report." + type + ".js' />");
+            }
+        </script>
     </body>
 </html>
