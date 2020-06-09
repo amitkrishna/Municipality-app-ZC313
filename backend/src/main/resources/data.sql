@@ -1,2 +1,2 @@
-INSERT INTO users(id, first_name, middle_name, last_name, email, password, type) VALUES (1, 'Admin', '', 'userr', 'admin@gmail.com', '123', 'admin')
-INSERT INTO users(id, first_name, middle_name, last_name, email, password, type) VALUES (2, 'Officer', '', 'userr', 'officer@gmail.com', '123', 'officer')
+INSERT INTO users(id, first_name, middle_name, last_name, email, password, type) VALUES (1, 'Admin', '', 'userr', 'admin@bits.in', '123', 'admin')
+INSERT INTO users(id, first_name, middle_name, last_name, email, password, type) VALUES (2, 'Officer', '', 'userr', 'officer@bits.in', '123', 'officer')
