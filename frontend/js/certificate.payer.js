@@ -2,6 +2,7 @@ template = () => {};
 template.certHead = () => {
     var table = document.createElement("table");
     table.setAttribute("class", "table");
+    table.setAttribute("id", "table");
     var trhead = document.createElement("tr");
     trhead.setAttribute("class", "head");
     var th = document.createElement("th");
@@ -179,4 +180,16 @@ getTimeFormat = (datetime) => {
     ] = dateTimeFormat.formatToParts(date);
 
     return `${hour}:${minute}:${second}`;
+};
+
+generateReoprtCert = () => {
+    const doc = new jsPDF("l", "pt", "a4");
+    doc.autoTable({ html: "#table" });
+    doc.save("certificate.pdf");
+};
+
+var specialElementHandlers = {
+    "#editor": function (element, renderer) {
+        return true;
+    },
 };
