@@ -32,7 +32,7 @@ public class PropertyTaxController {
 	private PropertyTaxService ptService;
 	
 	@PostMapping("/calculate")
-	public HttpEntity<TaxDetails> calculatePropertTax(@RequestBody TaxDetails taxDetails) {
+	public HttpEntity<TaxDetails> calculatePropertyTax(@RequestBody TaxDetails taxDetails) {
 		/**
 		 * Request body = {
 		 * 	email: String,
