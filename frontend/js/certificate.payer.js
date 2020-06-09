@@ -37,9 +37,9 @@ template.certRow = (value) => {
     userArea.setAttribute("class", "user-datetime");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = value.time;
+    span.innerHTML = value.date + "T" + value.time;
 
-    p.innerHTML = "Date: ";
+    p.innerHTML = "Date-Time: ";
     p.appendChild(span);
     userArea.appendChild(p);
     eachTax.appendChild(userArea);
@@ -48,7 +48,7 @@ template.certRow = (value) => {
     userAmt.setAttribute("class", "user-type");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = value.type + " Certificate";
+    span.innerHTML = value.category + " Certificate";
 
     p.innerHTML = "Type: ";
     p.appendChild(span);
@@ -64,7 +64,7 @@ $(".table-container").append(template.certHead());
 
 $.ajax({
     type: "GET",
-    url: "http://localhost:8080/api/v1/property-tax/show/" + user.email,
+    url: "http://localhost:8080/api/v1/certificate/show/" + user.email,
     contentType: "application/json",
     dataType: "json",
     success: (oSuccess) => {
@@ -87,12 +87,14 @@ applyBirth = () => {
 
     var formData = new Object();
     formData["name"] = $("#birthName").val();
-    formData["date"] = new Date($("#birthTimestamp").val()).toISOString();
-    formData["type"] = "birth";
+    formData["date"] = getDateFormat($("#birthTimestamp").val());
+    formData["time"] = getTimeFormat($("#birthTimestamp").val());
+    formData["category"] = "birth";
+    formData["dateCreated"] = getDateFormat(new Date());
     formData["email"] = user.email;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/",
+        url: "http://localhost:8080/api/v1/certificate/request",
         data: JSON.stringify(formData),
         contentType: "application/json",
         dataType: "json",
@@ -108,13 +110,15 @@ applyDeath = () => {
     activity.start();
 
     var formData = new Object();
-    formData["name"] = $("#deathhName").val();
-    formData["date"] = new Date($("#deathTimestamp").val()).toISOString();
-    formData["type"] = "death";
+    formData["name"] = $("#deathName").val();
+    formData["date"] = getDateFormat($("#deathTimestamp").val());
+    formData["time"] = getTimeFormat($("#deathTimestamp").val());
+    formData["category"] = "death";
+    formData["dateCreated"] = getDateFormat(new Date());
     formData["email"] = user.email;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/",
+        url: "http://localhost:8080/api/v1/certificate/request",
         data: JSON.stringify(formData),
         contentType: "application/json",
         dataType: "json",
@@ -125,4 +129,40 @@ applyDeath = () => {
             messageBox.show("Error applying death certificate!");
         },
     });
+};
+
+getDateFormat = (datetime) => {
+    const date = new Date(datetime);
+    const dateTimeFormat = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
+    const [
+        { value: month },
+        ,
+        { value: day },
+        ,
+        { value: year },
+    ] = dateTimeFormat.formatToParts(date);
+
+    return `${year}-${month}-${day}`;
+};
+
+getTimeFormat = (datetime) => {
+    const date = new Date(datetime);
+    const dateTimeFormat = new Intl.DateTimeFormat("en", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+    const [
+        { value: hour },
+        ,
+        { value: minute },
+        ,
+        { value: second },
+    ] = dateTimeFormat.formatToParts(date);
+
+    return `${hour}:${minute}:${second}`;
 };

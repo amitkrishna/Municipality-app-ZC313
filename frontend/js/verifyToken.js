@@ -16,7 +16,9 @@ token.verify = () => {
             contentType: "application/json",
             dataType: "json",
             success: (oUser) => {
-                if (oUser.id != 0) user = oUser;
+                if (oUser == null || oUser == "" || oUser == undefined)
+                    return false;
+                else if (oUser.id != 0) user = oUser;
                 return true;
             },
             error: (oError) => {
