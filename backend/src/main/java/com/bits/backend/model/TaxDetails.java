@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 public class TaxDetails {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="id", unique=true)
 	private long id;
 

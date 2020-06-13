@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bits.backend.model.TaxDetails;
-import com.bits.backend.service.PropertyTaxService;
+import com.bits.backend.service.TaxService;
 
 
 @RestController
 @RequestMapping("api/v1/property-tax")
-public class PropertyTaxController {
+public class TaxController {
 
 	static final double DISCOUNT = 0.125;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private PropertyTaxService ptService;
+	private TaxService taxService;
 	
 	@PostMapping("/calculate")
 	public HttpEntity<TaxDetails> calculatePropertyTax(@RequestBody TaxDetails taxDetails) {
@@ -95,7 +95,7 @@ public class PropertyTaxController {
 		taxDetails.setDateCreated(LocalDate.now());
 		taxDetails.setDateModified(LocalDateTime.now());
 
-		if(ptService.insertTaxDetails(taxDetails)) {
+		if(taxService.insertTaxDetails(taxDetails)) {
 			status = HttpStatus.CREATED;
 			response = taxDetails;
 		}
@@ -112,7 +112,7 @@ public class PropertyTaxController {
 	public HttpEntity<List<TaxDetails>> getTaxDetailsByUser(@PathVariable String email){
 
 		HttpStatus status;
-		List<TaxDetails> tdList = ptService.getTaxDetailsByUser(email);
+		List<TaxDetails> tdList = taxService.getTaxDetailsByUser(email);
 		if(tdList.isEmpty())
 			status = HttpStatus.NOT_FOUND;
 		else status = HttpStatus.OK;
@@ -126,9 +126,9 @@ public class PropertyTaxController {
 		HttpStatus status;
 		TaxDetails response;
 
-		if(ptService.payTax(id)){
+		if(taxService.payTax(id)){
 			status = HttpStatus.OK;
-			response = ptService.findById(id);
+			response = taxService.findById(id);
 		}
 		else{
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -144,7 +144,7 @@ public class PropertyTaxController {
 		HttpStatus status;
 		TaxDetails response;
 
-		TaxDetails td = ptService.findById(id);
+		TaxDetails td = taxService.findById(id);
 		if(td.isDiscountRaised()){
 			status = HttpStatus.CONFLICT;
 			response = new TaxDetails();
@@ -156,7 +156,7 @@ public class PropertyTaxController {
 			td.setDiscountRaised(true);
 			td.setDiscount(discount);
 			td.setTaxPayable(taxPayable - discount);
-			if(ptService.raiseDiscount(id, discount)){
+			if(taxService.raiseDiscount(id, discount)){
 				status = HttpStatus.OK;
 				response = td;
 			}
@@ -175,9 +175,9 @@ public class PropertyTaxController {
 		HttpStatus status;
 		TaxDetails response;
 
-		if(ptService.sendForApproval(id)){
+		if(taxService.sendForApproval(id)){
 			status = HttpStatus.OK;
-			response = ptService.findById(id);
+			response = taxService.findById(id);
 		}
 		else{
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -191,7 +191,7 @@ public class PropertyTaxController {
 	@GetMapping("/discount-raised")
 	public HttpEntity<List<TaxDetails>> getDiscountRaised(){
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-		List<TaxDetails> tdList =  ptService.getDiscountRaised();
+		List<TaxDetails> tdList =  taxService.getDiscountRaised();
 
 		if(!tdList.isEmpty())
 			status = HttpStatus.OK;
@@ -204,7 +204,7 @@ public class PropertyTaxController {
 	public HttpEntity<List<TaxDetails>> getApprovalPending(){
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-		List<TaxDetails> tdList = ptService.getSentForApproval();
+		List<TaxDetails> tdList = taxService.getSentForApproval();
 		if(!tdList.isEmpty())
 			status = HttpStatus.OK;
 		
@@ -216,7 +216,7 @@ public class PropertyTaxController {
 	public HttpEntity<TaxDetails> approveDiscount(@PathVariable Long id){
 		
 		HttpStatus status = HttpStatus.OK;
-		TaxDetails response = ptService.approveDiscount(id);
+		TaxDetails response = taxService.approveDiscount(id);
 		if(response.getDateCreated() == null)
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 

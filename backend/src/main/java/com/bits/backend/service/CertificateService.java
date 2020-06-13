@@ -37,8 +37,9 @@ public class CertificateService {
         }
         catch (Exception e){
             log.info(e.getMessage());
+        }
+        finally {
             return certificates;
         }
-        return certificates;
     }
 }

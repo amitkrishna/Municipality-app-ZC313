@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class PropertyTaxService {
+public class TaxService {
 	
 	Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -44,8 +44,9 @@ public class PropertyTaxService {
 		catch(Exception e) {
 			log.info(e.getMessage());
 		}
-		
-		return taxDetails;
+		finally {
+			return taxDetails;
+		}
 	}
 	
 	public List<TaxDetails> getUnpaidByUser(String email){
@@ -58,8 +59,9 @@ public class PropertyTaxService {
 		catch(Exception e) {
 			log.info(e.getMessage());
 		}
-		
-		return taxDetails;
+		finally {
+			return taxDetails;
+		}
 	}
 	
 	public boolean payTax(Long id) {
@@ -92,7 +94,6 @@ public class PropertyTaxService {
 		double updatedTax = 0;
 		TaxDetails td = new TaxDetails();
 		try {
-
 			td = tdRepo.findTaxDetailsById(id);
 			if(!td.isDiscountApproved()){
 				updatedTax = td.getTaxPayable() - td.getDiscount();
@@ -102,7 +103,10 @@ public class PropertyTaxService {
 		catch(Exception e) {
 			log.info(e.getMessage());
 		}
-		return td;
+		finally {
+			return td;
+		}
+
 	}
 
 	public boolean sendForApproval(Long id) {
@@ -124,9 +128,10 @@ public class PropertyTaxService {
 		}
 		catch(Exception e){
 			log.info(e.getMessage());
+		}
+		finally {
 			return taxDetails;
 		}
-		return taxDetails;
 		
 	}
 
@@ -138,9 +143,10 @@ public class PropertyTaxService {
 		}
 		catch(Exception e){
 			log.info(e.getMessage());
+		}
+		finally {
 			return taxDetails;
 		}
-		return taxDetails;
 	}
 
 	public TaxDetails findById(Long id){

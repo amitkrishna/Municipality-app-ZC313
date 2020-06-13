@@ -4,9 +4,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "name", "date", "category" }))
 @Entity
 public class Certificate{
@@ -18,26 +15,26 @@ public class Certificate{
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true)
     private long id;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="date")
+    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name="date_created")
+    @Column(name = "date_created")
     private LocalDate dateCreated;
 
-    @Column(name="time")
+    @Column(name = "time")
     private LocalTime time;
 
-    @Column(name="category")
+    @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private CertType category;
 
@@ -111,6 +108,7 @@ public class Certificate{
 
     @Override
     public String toString(){
+
         return email+" "+name+" "+date+" "+category+" "+dateCreated;
     }
 }
