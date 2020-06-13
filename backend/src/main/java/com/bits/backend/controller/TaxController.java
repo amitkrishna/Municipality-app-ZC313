@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.bits.backend.model.Property;
+import com.bits.backend.service.PropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,21 +32,22 @@ public class TaxController {
 	
 	@Autowired
 	private TaxService taxService;
+
+	@Autowired
+	private PropertyService propertyService;
 	
 	@PostMapping("/calculate")
 	public HttpEntity<TaxDetails> calculatePropertyTax(@RequestBody TaxDetails taxDetails) {
 		/**
 		 * Request body = {
 		 * 	email: String,
-		 *  zone: char,
-		 *  area: double,
+		 *  propertyId: long
 		 *  selfOccupied: boolean
 		 * }
 		 * OR
 		 * {
 		 * 	email: String,
-		 * 	zone: char,
-		 *  area: double,
+		 * 	propertyId: long
 		 *  discountRaised: boolean,
 		 *  selfOccupied: boolean
 		 *  }
@@ -53,8 +56,10 @@ public class TaxController {
 		log.info(taxDetails.toString());
 		HttpStatus status;
 		TaxDetails response;
+		Property p = propertyService.findPropertyById(taxDetails.getPropertyId());
+
 		double taxRate = 0;
-		switch(taxDetails.getZone()) {
+		switch(p.getZone()) {
 		
 			case "A":
 			case "a":
@@ -83,7 +88,7 @@ public class TaxController {
 		}
 		
 		taxRate = (taxDetails.isSelfOccupied())?taxRate: 2*taxRate;
-		double taxPayable = taxRate * taxDetails.getArea();
+		double taxPayable = taxRate * p.getArea();
 
 		if(taxDetails.isDiscountRaised()){
 			double discountAmt = DISCOUNT * taxPayable;

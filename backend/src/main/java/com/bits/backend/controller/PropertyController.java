@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,15 @@ public class PropertyController {
 
     @PostMapping("/add")
     public HttpEntity<Property> addProperty(@RequestBody Property property){
+        /**
+         * Request body = {
+         * userId: String,
+         * area: double,
+         * zone: String
+         * }
+         */
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        property.setDateCreated(LocalDate.now());
         Property response = new Property();
 
         if(propertyService.insertProperty(property)){
@@ -45,6 +54,18 @@ public class PropertyController {
             status = HttpStatus.NOT_FOUND;
         }
         HttpEntity<List<Property>> res = new ResponseEntity<>(response, status);
+        return res;
+    }
+
+    @GetMapping("/calculate-tax/{id}")
+    public HttpEntity<String> updateTaxStatus(@PathVariable long id) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String response = "Tax status of property could not be updated";
+        if (propertyService.updateTaxCalculated(id)) {
+            status = HttpStatus.OK;
+            response = "Tax status updated";
+        }
+        HttpEntity<String> res = new ResponseEntity<>(response, status);
         return res;
     }
 }

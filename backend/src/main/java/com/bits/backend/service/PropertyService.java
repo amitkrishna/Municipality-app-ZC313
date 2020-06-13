@@ -2,7 +2,6 @@ package com.bits.backend.service;
 
 import com.bits.backend.model.Property;
 import com.bits.backend.repository.PropertyRepository;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,4 +43,30 @@ public class PropertyService {
             return properties;
         }
     }
+
+    public boolean updateTaxCalculated(long id){
+
+        try{
+            propertyRepo.updateTaxCalculated(id);
+        }
+        catch (Exception e){
+            log.info(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public Property findPropertyById(long id){
+        Property p = new Property();
+        try{
+           p = propertyRepo.findPropertyById(id);
+        }
+        catch (Exception e){
+            log.info(e.getMessage());
+        }
+        finally {
+            return p;
+        }
+    }
+
 }

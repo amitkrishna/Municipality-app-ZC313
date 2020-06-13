@@ -2,13 +2,14 @@ package com.bits.backend.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "area", "zone" }))
 @Entity
 public class Property {
-
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
 
@@ -82,6 +83,8 @@ public class Property {
         this.area = area;
         this.zone = zone;
         this.taxCalculated = false;
+        Logger log = LoggerFactory.getLogger(getClass());
+        log.info(String.valueOf(LocalDate.now()));
         this.dateCreated = LocalDate.now();
     }
 

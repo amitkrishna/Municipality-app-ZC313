@@ -11,12 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "email", "zone", "date_created" }))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "email", "property_id", "date_created" }))
 @Entity
 public class TaxDetails {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name ="id", unique=true)
 	private long id;
 
@@ -24,12 +24,8 @@ public class TaxDetails {
 	private String email;
 	
 
-	@Column(name="zone")
-	private String zone;
-	
-
-	@Column(name="area")
-	private double area;
+	@Column(name = "property_id")
+	private long propertyId;
 	
 
 	@Column(name ="tax_payable")
@@ -79,22 +75,6 @@ public class TaxDetails {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getZone() {
-		return zone;
-	}
-
-	public void setZone(String zone) {
-		this.zone = zone;
-	}
-
-	public double getArea() {
-		return area;
-	}
-
-	public void setArea(double area) {
-		this.area = area;
 	}
 
 	public double getTaxPayable() {
@@ -168,11 +148,19 @@ public class TaxDetails {
 	public void setSentForApproval(boolean sentForApproval){
 		this.sentForApproval = sentForApproval;
 	}
-	
+
+	public long getPropertyId(){
+		return propertyId;
+	}
+
+	public void setPropertyId(long propertyId){
+		this.propertyId = propertyId;
+	}
+
 	public TaxDetails() {	}
 	
 	
-	public TaxDetails(String email, String zone, double area, boolean selfOccupied) {
+	public TaxDetails(String email, long propertyId, boolean selfOccupied) {
 	
 		this.email = email;
 		this.taxPayable = 0.0;
@@ -181,20 +169,18 @@ public class TaxDetails {
 		this.sentForApproval = false;
 		this.discountApproved = false;
 		this.discount = 0;
-		this.area = area;
-		this.zone = zone;
+		this.propertyId = propertyId;
 		this.selfOccupied = selfOccupied;
 		this.dateCreated = LocalDate.now();
 		this.dateModified = LocalDateTime.now();
 	}
 	
-	public TaxDetails(String email, String zone, double area, boolean selfOccupied, boolean discountRaised) {
+	public TaxDetails(String email, long propertyId, boolean selfOccupied, boolean discountRaised) {
 		
 		this.email = email;
 		this.taxPayable = 0.0;
 		this.paid = false;
-		this.zone = zone;
-		this.area = area;
+		this.propertyId = propertyId;
 		this.discountRaised = discountRaised;
 		this.sentForApproval = false;
 		this.discountApproved = false;
@@ -207,7 +193,7 @@ public class TaxDetails {
 	@Override
 	public String toString() {
 		return "{email:"+email+", taxPayable:"+taxPayable+", paid:"+paid+
-				", zone:"+zone+", area:"+area+", discountRaised:"+discountRaised+
+				", property id: "+propertyId+", discountRaised:"+discountRaised+
 				", discountApproved:"+discountApproved+", discount:"+discount+
 				", dateCreated:"+dateCreated+", dateModified:"+dateModified+"}";
 	}
