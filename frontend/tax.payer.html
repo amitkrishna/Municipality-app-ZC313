@@ -17,6 +17,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.3/jspdf.plugin.autotable.min.js"></script>
+        <script
+            src="https://kit.fontawesome.com/e89a4d83e9.js"
+            crossorigin="anonymous"
+        ></script>
         <script src="./js/cookie.js"></script>
         <script src="./js/verifyToken.js"></script>
         <script>
@@ -31,7 +35,7 @@
         </script>
         <title>Tax | Municipality</title>
     </head>
-    <body>
+    <body onhashchange="hashChanged();" onload="loadedHashedPage();">
         <div class="layerBlack" id="spinnerLayer"></div>
         <div class="container">
             <div class="spinner-main" id="spinner">
@@ -59,28 +63,18 @@
                         <ul>
                             <li><a href="index.html">Home</a></li>
                             <li><a href="tax.payer.html">Tax</a></li>
+                            <li><a href="property.payer.html">Property</a></li>
                             <li>
                                 <a href="#" onclick="generateReport();"
                                     >Report</a
                                 >
                             </li>
-                            <script>
-                                if (isUser)
-                                    document.write(
-                                        "<li><a href='certificate.payer.html'>Certification</a></li>"
-                                    );
-                            </script>
-
-                            <script>
-                                if (isUser)
-                                    document.write(
-                                        "<li><a onclick='logout();'>Logout</a></li>"
-                                    );
-                                else
-                                    document.write(
-                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
-                                    );
-                            </script>
+                            <li>
+                                <a href="certificate.payer.html"
+                                    >Certification</a
+                                >
+                            </li>
+                            <li><a onclick="logout();">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -92,57 +86,75 @@
                     <h3 id="messageOk">OK</h3>
                 </div>
             </div>
-
+            <div class="options" id="options">
+                <div class="create">
+                    <span><i class="fas fa-landmark"></i> </span>
+                    <span
+                        for="form"
+                        parent="tax-options"
+                        onclick="changeView();"
+                        >Apply</span
+                    >
+                </div>
+                <div class="table-option">
+                    <span><i class="fas fa-list"></i></span>
+                    <span
+                        for="table-view"
+                        parent="tax-options"
+                        onclick="changeView();"
+                        >List</span
+                    >
+                </div>
+            </div>
             <div class="tax">
-                <div class="text">
-                    <p>Property Tax</p>
-                    <p>Register</p>
-                </div>
-                <div class="input">
-                    <select name="Zone" id="zone" class="zone">
-                        <option value="">Select Zone</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                    </select>
-                    <input type="number" placeholder="Area" id="area" />
+                <div class="form" id="form">
+                    <div class="text">
+                        <p>Property Tax</p>
+                        <p>Register</p>
+                    </div>
+                    <div class="input">
+                        <select name="property" id="property" class="zone">
+                            <option value="">Select Property</option>
+                        </select>
 
-                    <input
-                        type="checkbox"
-                        placeholder="Raise Discount?"
-                        id="raiseDiscount"
-                        class="checkbox"
-                    />
-                    <label for="raiseDiscount">Raise Discount</label>
+                        <input
+                            type="checkbox"
+                            placeholder="Raise Discount?"
+                            id="raiseDiscount"
+                            class="checkbox"
+                        />
+                        <label for="raiseDiscount">Raise Discount</label>
 
-                    <input
-                        type="checkbox"
-                        placeholder="Self Occupied?"
-                        id="selfOccupied"
-                        class="checkbox"
-                    />
-                    <label for="selfOccupied">Self-Occupied?</label>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        id="email"
-                        style="display: none;"
-                    />
-                    <br />
-                    <button id="tax" onclick="addPropertyTax();">Add</button>
+                        <input
+                            type="checkbox"
+                            placeholder="Self Occupied?"
+                            id="selfOccupied"
+                            class="checkbox"
+                        />
+                        <label for="selfOccupied">Self-Occupied?</label>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            id="email"
+                            style="display: none;"
+                        />
+                        <br />
+                        <button id="tax" onclick="addPropertyTax();">
+                            Add
+                        </button>
+                    </div>
                 </div>
-                <div class="line"></div>
-                <div align="center">
-                    <div class="table-container" id="table-container"></div>
-                    <div id="elementH"></div>
+                <div class="table-view" id="table-view">
+                    <div align="center">
+                        <div class="table-container" id="table-container"></div>
+                        <div id="elementH"></div>
+                    </div>
                 </div>
             </div>
 
             <script src="./js/main.js"></script>
             <script src="./js/tax.payer.js" defer></script>
+            <script src="./js/changeview.js"></script>
             <script src="./js/report.payer.js"></script>
         </div>
     </body>

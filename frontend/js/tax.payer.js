@@ -11,19 +11,10 @@ template.payerHead = () => {
 
     return table;
 };
-template.payerRow = (
-    zone,
-    area,
-    amt,
-    uuid,
-    hasDiscount,
-    isPaid,
-    isApproved,
-    isSelfOccupied
-) => {
+template.payerRow = (value) => {
     var trbody = document.createElement("tr");
     trbody.setAttribute("class", "tr");
-    trbody.setAttribute("uuid", uuid);
+    trbody.setAttribute("uuid", value.paid);
 
     var td = document.createElement("td");
     trbody.appendChild(td);
@@ -31,44 +22,44 @@ template.payerRow = (
     var eachTax = document.createElement("div");
     eachTax.setAttribute("class", "each-tax");
 
-    var userZone = document.createElement("div");
-    userZone.setAttribute("class", "user-zone");
+    var propertyId = document.createElement("div");
+    propertyId.setAttribute("class", "user-propertyId");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = zone;
+    span.innerHTML = value.propertyId;
 
-    p.innerHTML = "Zone: ";
+    p.innerHTML = "Property Id: ";
     p.appendChild(span);
-    userZone.appendChild(p);
-    eachTax.appendChild(userZone);
+    propertyId.appendChild(p);
+    eachTax.appendChild(propertyId);
 
-    var userArea = document.createElement("div");
-    userArea.setAttribute("class", "user-area");
+    var taxPayable = document.createElement("div");
+    taxPayable.setAttribute("class", "user-taxPayable");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = area;
-
-    p.innerHTML = "Area: ";
-    p.appendChild(span);
-    userArea.appendChild(p);
-    eachTax.appendChild(userArea);
-
-    var userAmt = document.createElement("div");
-    userAmt.setAttribute("class", "user-amt");
-    var p = document.createElement("p");
-    var span = document.createElement("span");
-    span.innerHTML = amt;
+    span.innerHTML = value.taxPayable;
 
     p.innerHTML = "Tax Payable: ";
     p.appendChild(span);
-    userAmt.appendChild(p);
-    eachTax.appendChild(userAmt);
+    taxPayable.appendChild(p);
+    eachTax.appendChild(taxPayable);
+
+    var discount = document.createElement("div");
+    discount.setAttribute("class", "user-discount");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = value.discount;
+
+    p.innerHTML = "Discount: ";
+    p.appendChild(span);
+    discount.appendChild(p);
+    eachTax.appendChild(discount);
 
     var approved = document.createElement("div");
     approved.setAttribute("class", "user-approved");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = isApproved ? "Yes" : "No";
+    span.innerHTML = value.discountApproved ? "Yes" : "No";
 
     p.innerHTML = "Discount Approved: ";
     p.appendChild(span);
@@ -79,19 +70,30 @@ template.payerRow = (
     selfOccupied.setAttribute("class", "user-selfOccupied");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = isSelfOccupied ? "Yes" : "No";
+    span.innerHTML = value.selfOccupied ? "Yes" : "No";
 
     p.innerHTML = "Self Occupied: ";
     p.appendChild(span);
     selfOccupied.appendChild(p);
     eachTax.appendChild(selfOccupied);
 
-    if (!hasDiscount) {
+    var paid = document.createElement("div");
+    paid.setAttribute("class", "user-paid");
+    var p = document.createElement("p");
+    var span = document.createElement("span");
+    span.innerHTML = value.paid ? "Yes" : "No";
+
+    p.innerHTML = "Paid: ";
+    p.appendChild(span);
+    paid.appendChild(p);
+    eachTax.appendChild(paid);
+
+    if (!value.discountRaised) {
         var userDisc = document.createElement("div");
         userDisc.setAttribute("class", "user-discount");
         var button = document.createElement("button");
         button.setAttribute("class", "button");
-        button.setAttribute("uuid", uuid);
+        button.setAttribute("uuid", value.id);
         button.setAttribute("onclick", "discount();");
         button.innerHTML = "Raise Discount";
 
@@ -99,12 +101,12 @@ template.payerRow = (
         eachTax.appendChild(userDisc);
     }
 
-    if (!isPaid) {
+    if (!value.paid) {
         var userPay = document.createElement("div");
         userPay.setAttribute("class", "user-pay");
         var button = document.createElement("button");
         button.setAttribute("class", "button");
-        button.setAttribute("uuid", uuid);
+        button.setAttribute("uuid", value.id);
         button.setAttribute("onclick", "pay();");
         button.innerHTML = "Pay";
 
@@ -129,18 +131,7 @@ $.ajax({
     success: (oSuccess) => {
         if (oSuccess.length > 0) {
             oSuccess.forEach((value, key) => {
-                $(".table").append(
-                    template.payerRow(
-                        value.zone,
-                        value.area,
-                        value.taxPayable,
-                        value.id,
-                        value.discountRaised,
-                        value.paid,
-                        value.discountApproved,
-                        value.selfOccupied
-                    )
-                );
+                $(".table").append(template.payerRow(value));
             });
         }
     },
@@ -149,6 +140,33 @@ $.ajax({
             $(".table-container").append("No Data found!");
             activity.stop();
         } else messageBox.show("Error connecting");
+    },
+});
+
+$.ajax({
+    type: "GET",
+    url: "http://localhost:8080/api/v1/property/show/" + user.email,
+    contentType: "application/json",
+    dataType: "json",
+    success: (oSuccess) => {
+        if (oSuccess.length > 0) {
+            oSuccess.forEach((value, key) => {
+                var option = document.createElement("option");
+                option.setAttribute("value", value.id);
+                option.innerHTML =
+                    value.id +
+                    " | Zone: " +
+                    value.zone +
+                    " | Area: " +
+                    value.area;
+                $("#property")[0].appendChild(option);
+            });
+        } else {
+        }
+    },
+    error: (oError) => {
+        if (oError.status == 404) {
+        } else messageBox.show("Error getting properties");
     },
 });
 
@@ -194,12 +212,15 @@ addPropertyTax = () => {
     activity.start();
 
     var formData = new Object();
-    formData["zone"] = $("#zone").val();
-    formData["area"] = $("#area").val();
-    formData["discountRaised"] = $("#raiseDiscount").is(":checked");
-    formData["selfOccupied"] = $("#selfOccupied").is(":checked");
-    formData["email"] = user.email;
+    formData["dateCreated"] = new Date().toISOString();
     formData["discount"] = 0;
+    formData["discountApproved"] = false;
+    formData["discountRaised"] = $("#raiseDiscount").is(":checked");
+    formData["email"] = user.email;
+    formData["paid"] = false;
+    formData["propertyId"] = parseInt($("#property").val());
+    formData["selfOccupied"] = $("#selfOccupied").is(":checked");
+
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/api/v1/property-tax/calculate",
@@ -207,7 +228,7 @@ addPropertyTax = () => {
         contentType: "application/json",
         dataType: "json",
         success: (isValid) => {
-            window.location.href = "tax.payer.html";
+            window.location.reload();
         },
         error: () => {
             messageBox.show("Error while adding property!");

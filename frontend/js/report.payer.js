@@ -39,8 +39,7 @@ generateReport = () => {
                     [
                         "id",
                         "Email",
-                        "Zone",
-                        "Area",
+                        "Property Id",
                         "Tax Payable",
                         "Paid",
                         "Discount Raised",

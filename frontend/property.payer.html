@@ -17,6 +17,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.3/jspdf.plugin.autotable.min.js"></script>
+        <script
+            src="https://kit.fontawesome.com/e89a4d83e9.js"
+            crossorigin="anonymous"
+        ></script>
         <script src="./js/cookie.js"></script>
         <script src="./js/verifyToken.js"></script>
         <script>
@@ -25,12 +29,13 @@
             if (user == undefined) window.location.href = "login.html";
             else var isUser = true;
             if (user.type != "citizen") {
-                window.location.href = "index.html";
+                var type = user.type == "citizen" ? "payer" : user.type;
+                window.location.href = "tax." + type + ".html";
             }
         </script>
-        <title>Certificate | Municipality</title>
+        <title>Property | Municipality</title>
     </head>
-    <body>
+    <body onhashchange="hashChanged();" onload="loadedHashedPage();">
         <div class="layerBlack" id="spinnerLayer"></div>
         <div class="container">
             <div class="spinner-main" id="spinner">
@@ -64,23 +69,12 @@
                                     >Report</a
                                 >
                             </li>
-                            <script>
-                                if (isUser)
-                                    document.write(
-                                        "<li><a href='certificate.payer.html'>Certification</a></li>"
-                                    );
-                            </script>
-
-                            <script>
-                                if (isUser)
-                                    document.write(
-                                        "<li><a onclick='logout();'>Logout</a></li>"
-                                    );
-                                else
-                                    document.write(
-                                        "<li><a onclick='logout();'>Sign Up/ Log In</a></li>"
-                                    );
-                            </script>
+                            <li>
+                                <a href="certificate.payer.html"
+                                    >Certification</a
+                                >
+                            </li>
+                            <li><a onclick="logout();">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -92,52 +86,62 @@
                     <h3 id="messageOk">OK</h3>
                 </div>
             </div>
+            <div class="options" id="options">
+                <div class="create">
+                    <span><i class="fas fa-landmark"></i> </span>
+                    <span
+                        for="form"
+                        parent="tax-options"
+                        onclick="changeView();"
+                        >Register</span
+                    >
+                </div>
+                <div class="table-option">
+                    <span><i class="fas fa-list"></i></span>
+                    <span
+                        for="table-view"
+                        parent="tax-options"
+                        onclick="changeView();"
+                        >View All</span
+                    >
+                </div>
+            </div>
+            <div class="tax">
+                <div class="form" id="form">
+                    <div class="text">
+                        <p>Property</p>
+                        <p>Register</p>
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Zone" id="zone" />
+                        <input type="number" placeholder="Area" id="area" />
 
-            <div class="cert">
-                <div class="text">
-                    <p>Certificate</p>
-                    <p>Apply Birth Certificate</p>
-                </div>
-                <div class="input">
-                    <input type="text" placeholder="Name" id="birthName" />
-                    <input
-                        type="datetime-local"
-                        id="birthTimestamp"
-                        name="birthTimestamp"
-                    />
-                    <button id="birth" onclick="applyBirth();">Apply</button>
-                </div>
+                        <input
+                            type="checkbox"
+                            placeholder="Tax Calculated?"
+                            id="taxCalculated"
+                            class="checkbox"
+                        />
+                        <label for="taxCalculated">Tax Calculated</label>
 
-                <div class="text">
-                    <p></p>
-                    <p>Apply Death Certificate</p>
+                        <br />
+                        <button id="tax" onclick="addProperty();">
+                            Register
+                        </button>
+                    </div>
                 </div>
-                <div class="input">
-                    <input type="text" placeholder="Name" id="deathName" />
-                    <input
-                        type="datetime-local"
-                        id="deathTimestamp"
-                        name="deathTimestamp"
-                    />
-                    <button id="death" onclick="applyDeath();">Apply</button>
-                    <br />
-                    <br />
-                    <button id="reportt" onclick="generateReoprtCert();">
-                        Get Report
-                    </button>
-                </div>
-
-                <div class="tax">
-                    <br />
-                    <br />
+                <div class="table-view" id="table-view">
                     <div align="center">
                         <div class="table-container" id="table-container"></div>
+                        <div id="elementH"></div>
                     </div>
                 </div>
             </div>
+
             <script src="./js/main.js"></script>
-            <script src="./js/certificate.payer.js"></script>
             <script src="./js/report.payer.js"></script>
+            <script src="./js/changeview.js"></script>
+            <script src="./js/property.payer.js" defer></script>
         </div>
     </body>
 </html>

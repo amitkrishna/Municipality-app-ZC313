@@ -26,23 +26,12 @@ template.adminRow = (value) => {
     userZone.setAttribute("class", "user-zone");
     var p = document.createElement("p");
     var span = document.createElement("span");
-    span.innerHTML = value.zone;
+    span.innerHTML = value.propertyId;
 
-    p.innerHTML = "Zone: ";
+    p.innerHTML = "Property Id: ";
     p.appendChild(span);
     userZone.appendChild(p);
     eachTax.appendChild(userZone);
-
-    var userArea = document.createElement("div");
-    userArea.setAttribute("class", "user-area");
-    var p = document.createElement("p");
-    var span = document.createElement("span");
-    span.innerHTML = value.area;
-
-    p.innerHTML = "Area: ";
-    p.appendChild(span);
-    userArea.appendChild(p);
-    eachTax.appendChild(userArea);
 
     var userAmt = document.createElement("div");
     userAmt.setAttribute("class", "user-amt");

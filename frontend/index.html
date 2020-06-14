@@ -65,6 +65,12 @@
                                             type +
                                             ".html'>Tax</a></li>"
                                     );
+                                    if (type == "payer")
+                                        document.write(
+                                            "<li><a href='property." +
+                                                type +
+                                                ".html'>Property</a></li>"
+                                        );
                                     document.write(
                                         "<li><a href='#' onclick='generateReport();'>Report</a></li>"
                                     );
