@@ -55,29 +55,29 @@ template.payerRow = (zone, area, uuid, isTaxPayable) => {
     userArea.appendChild(p);
     eachTax.appendChild(userArea);
 
-    var taxPayable = document.createElement("div");
-    taxPayable.setAttribute("class", "user-isTaxPayable");
-    var p = document.createElement("p");
-    var span = document.createElement("span");
-    span.innerHTML = isTaxPayable ? "Yes" : "No";
+    // var taxPayable = document.createElement("div");
+    // taxPayable.setAttribute("class", "user-isTaxPayable");
+    // var p = document.createElement("p");
+    // var span = document.createElement("span");
+    // span.innerHTML = isTaxPayable ? "Yes" : "No";
 
-    p.innerHTML = "Tax Payable: ";
-    p.appendChild(span);
-    taxPayable.appendChild(p);
-    eachTax.appendChild(taxPayable);
+    // p.innerHTML = "Tax Payable: ";
+    // p.appendChild(span);
+    // taxPayable.appendChild(p);
+    // eachTax.appendChild(taxPayable);
 
-    if (!isTaxPayable) {
-        var taxPayablebtn = document.createElement("div");
-        taxPayablebtn.setAttribute("class", "user-taxPayable");
-        var button = document.createElement("button");
-        button.setAttribute("class", "button");
-        button.setAttribute("uuid", uuid);
-        button.setAttribute("onclick", "updateTaxPayable();");
-        button.innerHTML = "Update Tax Payable";
+    // if (!isTaxPayable) {
+    //     var taxPayablebtn = document.createElement("div");
+    //     taxPayablebtn.setAttribute("class", "user-taxPayable");
+    //     var button = document.createElement("button");
+    //     button.setAttribute("class", "button");
+    //     button.setAttribute("uuid", uuid);
+    //     button.setAttribute("onclick", "updateTaxPayable();");
+    //     button.innerHTML = "Update Tax Payable";
 
-        taxPayablebtn.appendChild(button);
-        eachTax.appendChild(taxPayablebtn);
-    }
+    //     taxPayablebtn.appendChild(button);
+    //     eachTax.appendChild(taxPayablebtn);
+    // }
     td.appendChild(eachTax);
     trbody.appendChild(td);
 
@@ -114,28 +114,28 @@ $.ajax({
     },
 });
 
-updateTaxPayable = () => {
-    activity.start();
-    console.log(event.currentTarget.getAttribute("uuid"));
-    $.ajax({
-        type: "GET",
-        url:
-            "http://localhost:8080/api/v1/property/calculate-tax/" +
-            event.currentTarget.getAttribute("uuid"),
-        contentType: "application/json",
-        dataType: "json",
-        success: (oSuccess) => {
-            activity.stop();
-            window.location.reload();
-        },
-        error: (e) => {
-            activity.stop();
-            if (e.responseText == "Tax status updated")
-                window.location.reload();
-            else messageBox.show("Error while updating tax payable!");
-        },
-    });
-};
+// updateTaxPayable = () => {
+//     activity.start();
+//     console.log(event.currentTarget.getAttribute("uuid"));
+//     $.ajax({
+//         type: "GET",
+//         url:
+//             "http://localhost:8080/api/v1/property/calculate-tax/" +
+//             event.currentTarget.getAttribute("uuid"),
+//         contentType: "application/json",
+//         dataType: "json",
+//         success: (oSuccess) => {
+//             activity.stop();
+//             window.location.reload();
+//         },
+//         error: (e) => {
+//             activity.stop();
+//             if (e.responseText == "Tax status updated")
+//                 window.location.reload();
+//             else messageBox.show("Error while updating tax payable!");
+//         },
+//     });
+// };
 
 addProperty = () => {
     activity.start();
@@ -143,7 +143,7 @@ addProperty = () => {
     var formData = new Object();
     formData["zone"] = $("#zone").val();
     formData["area"] = parseInt($("#area").val());
-    formData["taxCalculated"] = $("#taxCalculated").is(":checked");
+    // formData["taxCalculated"] = $("#taxCalculated").is(":checked");
     formData["dateCreated"] = new Date().toISOString();
     formData["userId"] = user.email;
     $.ajax({

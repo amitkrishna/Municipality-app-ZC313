@@ -113,16 +113,16 @@
                         <p>Register</p>
                     </div>
                     <div class="input">
-                        <input type="text" placeholder="Zone" id="zone" />
+                        <select name="Zone" id="zone" class="zone">
+                            <option value="">Select Zone</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
                         <input type="number" placeholder="Area" id="area" />
-
-                        <input
-                            type="checkbox"
-                            placeholder="Tax Calculated?"
-                            id="taxCalculated"
-                            class="checkbox"
-                        />
-                        <label for="taxCalculated">Tax Calculated</label>
 
                         <br />
                         <button id="tax" onclick="addProperty();">

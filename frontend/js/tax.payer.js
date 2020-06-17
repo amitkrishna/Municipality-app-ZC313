@@ -228,7 +228,30 @@ addPropertyTax = () => {
         contentType: "application/json",
         dataType: "json",
         success: (isValid) => {
-            window.location.reload();
+            if (isValid) {
+                debugger;
+                $.ajax({
+                    type: "GET",
+                    url:
+                        "http://localhost:8080/api/v1/property/calculate-tax/" +
+                        formData["propertyId"],
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: (oSuccess) => {
+                        activity.stop();
+                        window.location.reload();
+                    },
+                    error: (e) => {
+                        activity.stop();
+                        if (e.responseText == "Tax status updated")
+                            window.location.reload();
+                        else
+                            messageBox.show(
+                                "Error while updating tax payable!"
+                            );
+                    },
+                });
+            }
         },
         error: () => {
             messageBox.show("Error while adding property!");
